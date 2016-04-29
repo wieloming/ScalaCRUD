@@ -3,12 +3,12 @@ package services.reservation
 import domain.reservation.Reservation
 import domain.room.Room
 import domain.user.User
-import repositories.reservation.ReservationRepository
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import repositories.interfaces.ReservationRepo
 
 import scala.concurrent.Future
 
-class ReservationService(reservationRepository: ReservationRepository) {
+class ReservationService(reservationRepository: ReservationRepo) {
   def create(reservation: Reservation): Future[Reservation.id] = {
     reservationRepository.create(reservation)
   }

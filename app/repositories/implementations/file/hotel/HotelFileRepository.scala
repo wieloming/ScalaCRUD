@@ -1,14 +1,15 @@
-package repositories.hotel
+package repositories.implementations.file.hotel
 
 import java.util.concurrent.atomic.AtomicLong
 
 import domain.hotel.Hotel
-import repositories.BaseRepository
+import repositories.implementations.file.BaseFileRepository
+import repositories.interfaces.{HotelRepo, UserRepo}
 
 import scala.collection.mutable
 import scala.concurrent.Future
 
-class HotelRepository extends BaseRepository[Hotel, Hotel.id] {
+class HotelFileRepository extends HotelRepo with BaseFileRepository[Hotel, Hotel.id]{
   override val idSequence = new AtomicLong(0)
   override val db = mutable.Map[Hotel.id, Hotel]()
 

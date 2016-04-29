@@ -1,15 +1,16 @@
-package repositories.reservation
+package repositories.implementations.file.reservation
 
 import java.util.concurrent.atomic.AtomicLong
 
 import domain.reservation.Reservation
 import domain.user.User
-import repositories.BaseRepository
+import repositories.implementations.file.BaseFileRepository
+import repositories.interfaces.ReservationRepo
 
 import scala.collection.mutable
 import scala.concurrent.Future
 
-class ReservationRepository extends BaseRepository[Reservation, Reservation.id] {
+class ReservationFileRepository extends ReservationRepo with BaseFileRepository[Reservation, Reservation.id] {
   override val idSequence = new AtomicLong(0)
   override val db = mutable.Map[Reservation.id, Reservation]()
 

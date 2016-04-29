@@ -1,9 +1,9 @@
 package services
 
-import repositories.hotel.HotelRepository
-import repositories.reservation.ReservationRepository
-import repositories.room.RoomRepository
-import repositories.user.UserRepository
+import repositories.implementations.file.hotel.HotelFileRepository
+import repositories.implementations.file.reservation.ReservationFileRepository
+import repositories.implementations.file.room.RoomFileRepository
+import repositories.implementations.file.user.UserFileRepository
 import services.book.BookService
 import services.hotel.HotelService
 import services.reservation.ReservationService
@@ -11,10 +11,10 @@ import services.room.RoomService
 import services.user.UserService
 
 trait ServicesComponent {
-  val reservationRepository = new ReservationRepository
-  val userRepository = new UserRepository
-  val roomRepository = new RoomRepository
-  val hotelRepository = new HotelRepository
+  val reservationRepository = new ReservationFileRepository
+  val userRepository = new UserFileRepository
+  val roomRepository = new RoomFileRepository
+  val hotelRepository = new HotelFileRepository
 
   val reservationService = new ReservationService(reservationRepository)
   val userService = new UserService(reservationService, userRepository)

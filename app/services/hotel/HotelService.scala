@@ -3,14 +3,14 @@ package services.hotel
 import domain.hotel.{Hotel, HotelForCreateDto, HotelWithRoomsDto}
 import domain.room.{Room, RoomForRegisterDto, RoomWithReservationsDto}
 import org.joda.time.LocalDate
-import repositories.hotel.HotelRepository
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import repositories.interfaces.HotelRepo
 import services.reservation.ReservationService
 import services.room.RoomService
 
 import scala.concurrent.Future
 
-class HotelService(roomService: RoomService, reservationService: ReservationService, hotelRepository: HotelRepository) {
+class HotelService(roomService: RoomService, reservationService: ReservationService, hotelRepository: HotelRepo) {
 
   def createHotel(hotel: HotelForCreateDto): Future[Hotel.id] = {
     hotelRepository.create(Hotel(None, hotel.name, hotel.city))

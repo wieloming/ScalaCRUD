@@ -5,23 +5,24 @@ import domain.reservation.Reservation
 import domain.room.{Room, RoomForRegisterDto}
 import domain.user.{User, UserForCreateDto}
 import org.joda.time.LocalDate
-import repositories.reservation.ReservationRepository
 import services.book.BookService
 import services.hotel.HotelService
 import services.reservation.ReservationService
 import services.room.RoomService
 import services.user.UserService
-import repositories.hotel.HotelRepository
-import repositories.room.RoomRepository
-import repositories.user.UserRepository
+import repositories.implementations.file.hotel.HotelFileRepository
+import repositories.implementations.file.reservation.ReservationFileRepository
+import repositories.implementations.file.room.RoomFileRepository
+import repositories.implementations.file.user.UserFileRepository
+
 import scala.concurrent.{Await, Awaitable}
 import scala.concurrent.duration._
 
 trait TestData {
-  val reservationRepository = new ReservationRepository
-  val userRepository = new UserRepository
-  val roomRepository = new RoomRepository
-  val hotelRepository = new HotelRepository
+  val reservationRepository = new ReservationFileRepository
+  val userRepository = new UserFileRepository
+  val roomRepository = new RoomFileRepository
+  val hotelRepository = new HotelFileRepository
 
   val reservationService = new ReservationService(reservationRepository)
   val userService = new UserService(reservationService, userRepository)

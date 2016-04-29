@@ -1,14 +1,15 @@
-package repositories.room
+package repositories.implementations.file.room
 
 import java.util.concurrent.atomic.AtomicLong
 
 import domain.room.Room
-import repositories.BaseRepository
+import repositories.implementations.file.BaseFileRepository
+import repositories.interfaces.RoomRepo
 
 import scala.collection.mutable
 import scala.concurrent.Future
 
-class RoomRepository extends BaseRepository[Room, Room.id] {
+class RoomFileRepository extends RoomRepo with BaseFileRepository[Room, Room.id] {
   override val idSequence = new AtomicLong(0)
   override val db = mutable.Map[Room.id, Room]()
 

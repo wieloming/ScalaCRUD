@@ -4,11 +4,11 @@ import domain.reservation.Reservation
 import domain.user.{User, UserForCreateDto}
 import services.reservation.ReservationService
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import repositories.user.UserRepository
+import repositories.interfaces.UserRepo
 
 import scala.concurrent.Future
 
-class UserService(reservationService: ReservationService, userRepository: UserRepository) {
+class UserService(reservationService: ReservationService, userRepository: UserRepo) {
 
   def createUser(user: UserForCreateDto): Future[User.id] = {
     userRepository.create(User(None, user.email))

@@ -4,13 +4,13 @@ import domain.hotel.Hotel
 import domain.reservation.Reservation
 import domain.room.Room
 import org.joda.time.LocalDate
-import repositories.room.RoomRepository
 import services.reservation.ReservationService
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import repositories.interfaces.RoomRepo
 
 import scala.concurrent.Future
 
-class RoomService(reservationService: ReservationService, roomRepository: RoomRepository) {
+class RoomService(reservationService: ReservationService, roomRepository: RoomRepo) {
 
   def remove(id: Room.id) = roomRepository.remove(id)
 

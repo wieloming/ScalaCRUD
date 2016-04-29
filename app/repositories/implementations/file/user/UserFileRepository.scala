@@ -1,16 +1,17 @@
-package repositories.user
+package repositories.implementations.file.user
 
 import domain.user.User
 
 import collection.mutable
 import java.util.concurrent.atomic.AtomicLong
 
-import repositories.BaseRepository
+import repositories.implementations.file.BaseFileRepository
+import repositories.interfaces.UserRepo
 
 import scala.concurrent.Future
 
 
-class UserRepository extends BaseRepository[User, User.id] {
+class UserFileRepository extends UserRepo with BaseFileRepository[User, User.id] {
   override val idSequence = new AtomicLong(0)
   override val db = mutable.Map[User.id, User]()
 
