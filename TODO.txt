@@ -1,3 +1,5 @@
 TODO:
-from, to -> period
-type everything
+1. from, to -> period
+2. type everything
+3. tests for Json api
+4. move to booking
