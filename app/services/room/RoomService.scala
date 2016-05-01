@@ -23,6 +23,7 @@ class RoomService(reservationService: ReservationService, roomRepository: RoomRe
     }
     for {
       room <- findById(roomId)
+      rooms <- roomRepository.findAll()
       reservations <- findReservations(room)
     } yield if (room.isDefined) Some(reservations.forall(_.notIn(from, to))) else None
   }

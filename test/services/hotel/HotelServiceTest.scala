@@ -4,9 +4,9 @@ import domain.hotel.{Hotel, HotelWithRoomsDto}
 import domain.room.Room
 import org.joda.time.LocalDate
 import play.api.test.PlaySpecification
-import utils.TestData
+import utils.TestContainer
 
-class HotelServiceTest extends PlaySpecification with TestData {
+class HotelServiceTest extends PlaySpecification with TestContainer {
 
   "HotelService" should {
     "return hotel Id after creation" in {

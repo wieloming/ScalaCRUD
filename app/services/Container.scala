@@ -10,7 +10,7 @@ import services.reservation.ReservationService
 import services.room.RoomService
 import services.user.UserService
 
-trait ServicesComponent {
+trait Container {
   val reservationRepository = new ReservationFileRepository
   val userRepository = new UserFileRepository
   val roomRepository = new RoomFileRepository

@@ -4,9 +4,9 @@ import domain.reservation.Reservation
 import domain.user.User
 import org.joda.time.LocalDate
 import play.api.test.PlaySpecification
-import utils.TestData
+import utils.TestContainer
 
-class UserServiceTest extends PlaySpecification with TestData {
+class UserServiceTest extends PlaySpecification with TestContainer {
   "UserService" should {
     "return userId if can create user" in {
       val created = await(userService.createUser(user))

@@ -1,13 +1,13 @@
 package services.book
 
 import domain.reservation.Reservation
-import utils.TestData
+import utils.TestContainer
 import domain.room.Room
 import org.joda.time.LocalDate
 import play.api.test.PlaySpecification
 
 
-class BookServiceTest extends PlaySpecification with TestData {
+class BookServiceTest extends PlaySpecification with TestContainer {
 
   "BookService" should {
     "book room for user for two weeks" in {
