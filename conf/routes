@@ -3,19 +3,19 @@
 # ~~~~
 
 # Home page
-GET     /                                   controllers.Application.index
+GET     /                                  controllers.Application.index
 
 # users
-POST    /users                              @controllers.UserController.createUser
-GET     /users/:id                          @controllers.UserController.findUserById(id: Long)
-GET     /users/:id/reservations             @controllers.UserController.findReservations(id: Long)
+POST    /users                              controllers.UserAPI.createUser
+GET     /users/:id                          controllers.UserAPI.findUserById(id: Long)
+GET     /users/:id/reservations             controllers.UserAPI.findReservations(id: Long)
 
 # hotels
-POST    /hotels                             @controllers.HotelController.createHotel
-GET     /hotels/:id                         @controllers.HotelController.findHotelById(id: Long)
-POST    /hotels/:id/register                @controllers.HotelController.registerRoom(id: Long)
-DELETE  /hotels/:hotelId/room/:roomId       @controllers.HotelController.removeRoom(hotelId: Long, roomId: Long)
-GET     /hotels/find/:from/:to/:city/:price @controllers.HotelController.findAvailableRooms(from: org.joda.time.LocalDate, to: org.joda.time.LocalDate, city: String, price: Long)
+POST    /hotels                             controllers.HotelAPI.createHotel
+GET     /hotels/:id                         controllers.HotelAPI.findHotelById(id: Long)
+POST    /hotels/:id/register                controllers.HotelAPI.registerRoom(id: Long)
+DELETE  /hotels/:hotelId/room/:roomId       controllers.HotelAPI.removeRoom(hotelId: Long, roomId: Long)
+GET     /hotels/find/:from/:to/:city/:price controllers.HotelAPI.findAvailableRooms(from: org.joda.time.LocalDate, to: org.joda.time.LocalDate, city: String, price: Long)
 
 # booking
 POST    /book                               @controllers.BookController.book

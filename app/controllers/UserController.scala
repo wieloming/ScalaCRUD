@@ -1,6 +1,5 @@
 package controllers
 
-import com.google.inject.Inject
 import play.api.mvc._
 import play.api.libs.json._
 import domain.user.{User, UserForCreateDto}
@@ -8,7 +7,7 @@ import mappings.{ReservationJson, UserJson}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import services.Container
 
-class UserController @Inject()(container: Container) extends Controller with UserJson with ReservationJson {
+trait UserController extends Controller with UserJson with ReservationJson {
   self: Container =>
 
   def createUser() = Action.async(parse.json[UserForCreateDto]) { request =>
@@ -26,3 +25,5 @@ class UserController @Inject()(container: Container) extends Controller with Use
     userService.findReservations(User.id(id)).map(response => Ok(Json.toJson(response)))
   }
 }
+
+object UserAPI extends UserController with Container

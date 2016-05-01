@@ -1,5 +1,7 @@
 package controllers
 
+import javax.inject.Singleton
+
 import com.google.inject.Inject
 import domain.reservation.Reservation
 import play.api.mvc._
@@ -7,7 +9,6 @@ import mappings.RoomJson
 import play.api.libs.json.Json
 import services.Container
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import javax.inject._
 
 @Singleton
 class BookController @Inject()(container: Container) extends Controller with RoomJson {
