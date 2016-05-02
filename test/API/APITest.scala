@@ -62,7 +62,7 @@ class APITest extends PlaySpecification with TestContainer with FakeServer {
   "BookController" should {
     "return reservationId if can book" in {
       val request = FakeRequest(POST, "/book")
-        .withJsonBody(Json.parse("""{"roomId": {"value":2},"userId":{"value":1},"from":"2016-01-01","to":"2016-02-01"}"""))
+        .withJsonBody(Json.parse("""{"roomId":{"value":2},"userId":{"value":1},"period":{"from":"2016-01-01","to":"2016-02-01"}}"""))
 
       val home = route(request).get
 
@@ -71,7 +71,7 @@ class APITest extends PlaySpecification with TestContainer with FakeServer {
     }
     "return not found if cant book" in {
       val request = FakeRequest(POST, "/book")
-        .withJsonBody(Json.parse("""{"roomId": {"value":2},"userId":{"value":1},"from":"2016-01-01","to":"2016-02-01"}"""))
+        .withJsonBody(Json.parse("""{"roomId":{"value":2},"userId":{"value":1},"period":{"from":"2016-01-01","to":"2016-02-01"}}"""))
 
       val home = route(request).get
 
@@ -85,7 +85,7 @@ class APITest extends PlaySpecification with TestContainer with FakeServer {
       val result = route(request).get
 
       status(result) must equalTo(OK)
-      contentAsString(result) mustEqual """[{"id":{"value":1},"roomId":{"value":2},"userId":{"value":1},"from":"2016-01-01","to":"2016-02-01"}]"""
+      contentAsString(result) mustEqual """[{"id":{"value":1},"roomId":{"value":2},"userId":{"value":1},"period":{"from":"2016-01-01","to":"2016-02-01"}}]"""
     }
   }
 

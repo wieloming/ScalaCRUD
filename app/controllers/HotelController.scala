@@ -3,6 +3,7 @@ package controllers
 import javax.inject.Inject
 
 import domain.hotel.{Hotel, HotelForCreateDto}
+import domain.reservation.Reservation
 import domain.room.{Room, RoomForRegisterDto}
 import play.api.mvc._
 import mappings.RoomJson
@@ -39,7 +40,7 @@ class HotelController @Inject()(container: Container) extends Controller with Ro
   }
 
   def findAvailableRooms(from: LocalDate, to: LocalDate, city: String, price: Long) = Action.async { request =>
-    container.hotelService.findAvailableRooms(from, to, city, price).map{ rooms =>
+    container.hotelService.findAvailableRooms(Reservation.period(from, to), city, price).map { rooms =>
       if (rooms.nonEmpty) Ok(Json.toJson(rooms))
       else NotFound
     }

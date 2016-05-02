@@ -42,7 +42,8 @@ trait TestContainer {
   val room = RoomForRegisterDto(roomPrice)
   val hotel = HotelForCreateDto("name", city)
   val user = UserForCreateDto("foo@test.com")
-  def reservation(from: LocalDate, to: LocalDate) = Reservation(None, roomId1, userId, from, to)
+  val oneWeekPeriod = Reservation.period(LocalDate.now, LocalDate.now.plusWeeks(1))
+  def reservation(period: Reservation.period) = Reservation(None, roomId1, userId, period)
 
   val finiteDuration = 10 seconds
   def await[T](f: Awaitable[T]): T = Await.result(f, finiteDuration)

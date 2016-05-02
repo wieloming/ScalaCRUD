@@ -1,6 +1,7 @@
 package services.hotel
 
 import domain.hotel.{Hotel, HotelForCreateDto, HotelWithRoomsDto}
+import domain.reservation.Reservation
 import domain.room.{Room, RoomForRegisterDto, RoomWithReservationsDto}
 import org.joda.time.LocalDate
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
@@ -42,7 +43,7 @@ class HotelService(roomService: RoomService, reservationService: ReservationServ
     } yield withRooms
   }
 
-  def findAvailableRooms(from: LocalDate, to: LocalDate, city: String, price: Long): Future[List[Room]] = {
+  def findAvailableRooms(period: Reservation.period, city: String, price: Long): Future[List[Room]] = {
     def findReservations(rooms: List[Room]): Future[List[RoomWithReservationsDto]] =
       Future.traverse(rooms) {
         case room@Room(Some(id), _, _) =>
@@ -50,7 +51,7 @@ class HotelService(roomService: RoomService, reservationService: ReservationServ
         case _ => Future.successful(None)
       }.map(_.flatten)
     def filterBooked(rooms: List[RoomWithReservationsDto]): List[Room] =
-      rooms.filter(_.reservations.forall(_.notIn(from, to))).map(_.room)
+      rooms.filter(_.reservations.forall(_.notIn(period))).map(_.room)
     for {
       hotels <- hotelRepository.findAllByCity(city)
       rooms <- roomService.findByHotelIds(hotels.flatMap(_.id))

@@ -23,8 +23,8 @@ class UserServiceTest extends PlaySpecification with TestContainer {
       //create room
       await(hotelService.registerRoom(hotelId, room))
       //book room
-      val reservationId = await(bookService.book(reservation(LocalDate.now, LocalDate.now.plusWeeks(1))))
-      await(userService.findReservations(userId)) must equalTo(List(Reservation(reservationId, roomId1, userId, LocalDate.now, LocalDate.now.plusWeeks(1))))
+      val reservationId = await(bookService.book(reservation(oneWeekPeriod)))
+      await(userService.findReservations(userId)) must equalTo(List(Reservation(reservationId, roomId1, userId, oneWeekPeriod)))
     }
   }
 }

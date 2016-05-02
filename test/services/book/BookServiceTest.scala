@@ -15,23 +15,26 @@ class BookServiceTest extends PlaySpecification with TestContainer {
       await(userService.createUser(user))
       val createdId = await(hotelService.createHotel(hotel))
       await(hotelService.registerRoom(createdId, room))
-      val fromDB = await(bookService.book(reservation(LocalDate.now, LocalDate.now.plusWeeks(1))))
+      val fromDB = await(bookService.book(reservation(oneWeekPeriod)))
       fromDB must equalTo(Some(Reservation.id(1)))
     }
   }
   "BookService" should {
     "cannot book if not free in period" in {
-      await(bookService.book(reservation(LocalDate.now.plusDays(5), LocalDate.now.plusWeeks(1)))) must equalTo(None)
+      val period = Reservation.period(LocalDate.now.plusDays(5), LocalDate.now.plusWeeks(1))
+      await(bookService.book(reservation(period))) must equalTo(None)
     }
   }
   "BookService" should {
     "not found if reservation" in {
-      await(hotelService.findAvailableRooms(LocalDate.now.plusDays(5), LocalDate.now.plusWeeks(1), city, roomPrice)) must equalTo(List.empty)
+      val period = Reservation.period(LocalDate.now.plusDays(5), LocalDate.now.plusWeeks(1))
+      await(hotelService.findAvailableRooms(period, city, roomPrice)) must equalTo(List.empty)
     }
   }
   "BookService" should {
     "found if period after reservation" in {
-      val fromDB = await(hotelService.findAvailableRooms(LocalDate.now.plusWeeks(2), LocalDate.now.plusWeeks(3), city, roomPrice))
+      val period = Reservation.period(LocalDate.now.plusWeeks(2), LocalDate.now.plusWeeks(3))
+      val fromDB = await(hotelService.findAvailableRooms(period, city, roomPrice))
       val room = Room(Some(roomId1), roomPrice, hotelId)
       fromDB must equalTo(List(room))
     }

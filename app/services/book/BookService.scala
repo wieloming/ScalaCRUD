@@ -21,7 +21,7 @@ class BookService(roomService: RoomService, reservationService: ReservationServi
     for {
       user <- userService.findById(reservation.userId)
       room <- roomService.findById(reservation.roomId)
-      isFree <- roomService.isFreeBetween(reservation.roomId, reservation.from, reservation.to)
+      isFree <- roomService.isFreeBetween(reservation.roomId, reservation.period)
       reservationId <- createReservationIfValid(user, room, isFree, reservation)
     } yield reservationId
   }
