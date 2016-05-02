@@ -33,10 +33,16 @@ class RoomService(reservationService: ReservationService, roomRepository: RoomRe
   }
 
   def findById(id: Room.id): Future[Option[Room]] = {
+    roomRepository.findAll().foreach{u =>
+      println("all rooms: " + u)
+    }
     roomRepository.findById(id)
   }
 
   def findByHotelIds(ids: List[Hotel.id]): Future[List[Room]] = {
+    roomRepository.findAll().foreach{u =>
+      println("all rooms: " + u)
+    }
     for {
       rooms <- roomRepository.findAll()
       inHotels = rooms.filter(ids contains _.hotelId)

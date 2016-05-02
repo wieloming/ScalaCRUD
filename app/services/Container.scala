@@ -1,5 +1,7 @@
 package services
 
+import javax.inject.Singleton
+
 import repositories.implementations.file.hotel.HotelFileRepository
 import repositories.implementations.file.reservation.ReservationFileRepository
 import repositories.implementations.file.room.RoomFileRepository
@@ -10,7 +12,8 @@ import services.reservation.ReservationService
 import services.room.RoomService
 import services.user.UserService
 
-trait Container {
+@Singleton
+class Container {
   val reservationRepository = new ReservationFileRepository
   val userRepository = new UserFileRepository
   val roomRepository = new RoomFileRepository

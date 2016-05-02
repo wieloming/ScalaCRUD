@@ -6,7 +6,7 @@ import play.api.test.{FakeRequest, PlaySpecification}
 import utils.TestContainer
 
 
-class APITest extends PlaySpecification with TestContainer with ServerSpec{
+class APITest extends PlaySpecification with TestContainer with FakeServer {
   step(server.start())
     "UserController" should {
       "return userId if can create user" in {
@@ -60,14 +60,22 @@ class APITest extends PlaySpecification with TestContainer with ServerSpec{
     }
   }
   "BookController" should {
-    "return reservation if can book" in {
+    "return reservationId if can book" in {
       val request = FakeRequest(POST, "/book")
         .withJsonBody(Json.parse("""{"roomId": {"value":2},"userId":{"value":1},"from":"2016-01-01","to":"2016-02-01"}"""))
 
       val home = route(request).get
 
       status(home) must equalTo(OK)
-      contentAsString(home) must contain("Your new application is ready.")
+      contentAsString(home) mustEqual """{"value":1}"""
+    }
+    "return not found if cant book" in {
+      val request = FakeRequest(POST, "/book")
+        .withJsonBody(Json.parse("""{"roomId": {"value":2},"userId":{"value":1},"from":"2016-01-01","to":"2016-02-01"}"""))
+
+      val home = route(request).get
+
+      status(home) must equalTo(NOT_FOUND)
     }
   }
   step(server.stop())

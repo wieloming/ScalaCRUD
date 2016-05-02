@@ -2,7 +2,7 @@ package API
 
 import play.api.test._
 
-trait ServerSpec {
+trait FakeServer {
 
   implicit val app: FakeApplication = FakeApplication()
   implicit def port: Port = Helpers.testServerPort
