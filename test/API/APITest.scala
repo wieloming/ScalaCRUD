@@ -8,16 +8,16 @@ import utils.TestContainer
 
 class APITest extends PlaySpecification with TestContainer with FakeServer {
   step(server.start())
-    "UserController" should {
-      "return userId if can create user" in {
-        val request = FakeRequest(POST, "/users")
-          .withJsonBody(Json.parse("""{"email":"test"}"""))
+  "UserController" should {
+    "return userId if can create user" in {
+      val request = FakeRequest(POST, "/users")
+        .withJsonBody(Json.parse("""{"email":"test"}"""))
 
-        val result = route(request).get
+      val result = route(request).get
 
-        status(result) must equalTo(OK)
-        contentAsString(result) mustEqual """{"value":1}"""
-      }
+      status(result) must equalTo(OK)
+      contentAsString(result) mustEqual """{"value":1}"""
+    }
   }
 
   "HotelController" should {
@@ -78,5 +78,16 @@ class APITest extends PlaySpecification with TestContainer with FakeServer {
       status(home) must equalTo(NOT_FOUND)
     }
   }
+  "UserController" should {
+    "return users reservations" in {
+      val request = FakeRequest(GET, "/users/1/reservations")
+
+      val result = route(request).get
+
+      status(result) must equalTo(OK)
+      contentAsString(result) mustEqual """[{"id":{"value":1},"roomId":{"value":2},"userId":{"value":1},"from":"2016-01-01","to":"2016-02-01"}]"""
+    }
+  }
+
   step(server.stop())
 }

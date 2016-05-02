@@ -15,7 +15,6 @@ class UserService(reservationService: ReservationService, userRepository: UserRe
   }
 
   def findById(id: User.id): Future[Option[User]] = {
-    userRepository.findAll().foreach(o => println(">>"+o))
     userRepository.findById(id)
   }
 
