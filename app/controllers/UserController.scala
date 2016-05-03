@@ -11,20 +11,17 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import services.Container
 
 @Singleton
-class UserController @Inject()(container: Container) extends Controller with UserJson with ReservationJson {
+class UserController @Inject()(container: Container) extends BaseController with UserJson with ReservationJson {
 
   def createUser() = Action.async(parse.json[UserForCreateDto]) { request =>
     container.userService.createUser(request.body).map(response => Ok(Json.toJson(response)))
   }
 
   def findUserById(id: Long) = Action.async {
-    container.userService.findById(User.id(id)).map { user =>
-      if (user.isDefined) Ok(Json.toJson(user))
-      else NotFound
-    }
+    container.userService.findById(User.id(id))
   }
 
   def findReservations(id: Long) = Action.async {
-    container.userService.findReservations(User.id(id)).map(response => Ok(Json.toJson(response)))
+    container.userService.findReservations(User.id(id))
   }
 }
