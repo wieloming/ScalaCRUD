@@ -15,6 +15,10 @@ class RoomService(reservationService: ReservationService, roomRepository: RoomRe
 
   def create(room: Room) = roomRepository.create(room: Room)
 
+  def findByIds(ids: List[Room.id]): Future[List[Room]] = roomRepository.findByIds(ids)
+
+  def findById(id: Room.id): Future[Option[Room]] = roomRepository.findById(id)
+
   def isFreeBetween(roomId: Room.id, period: Reservation.period): Future[Option[Boolean]] = {
     def findReservations(room: Option[Room]): Future[List[Reservation]] = room match {
       case Some(r) => reservationService.findAllByRoomId(roomId)
@@ -22,30 +26,20 @@ class RoomService(reservationService: ReservationService, roomRepository: RoomRe
     }
     for {
       room <- findById(roomId)
-      rooms <- roomRepository.findAll()
       reservations <- findReservations(room)
-    } yield if (room.isDefined) Some(reservations.forall(_.notIn(period))) else None
+      isFree = reservations.forall(_.notIn(period))
+    } yield if (room.isDefined) Some(isFree) else None
   }
 
-  def findByIds(ids: List[Room.id]): Future[List[Room]] = {
-    roomRepository.findByIds(ids)
-  }
-
-  def findById(id: Room.id): Future[Option[Room]] = {
-    roomRepository.findById(id)
-  }
-
-  def findByHotelIds(ids: List[Hotel.id]): Future[List[Room]] = {
+  def findAllByHotelIds(ids: List[Hotel.id]): Future[List[Room]] =
     for {
       rooms <- roomRepository.findAll()
       inHotels = rooms.filter(ids contains _.hotelId)
     } yield inHotels
-  }
 
-  def findByHotelId(hotelId: Hotel.id): Future[List[Room]] = {
+  def findAllByHotelId(hotelId: Hotel.id): Future[List[Room]] =
     for {
       rooms <- roomRepository.findAll()
       inHotel = rooms.filter(_.hotelId == hotelId)
     } yield inHotel
-  }
 }
