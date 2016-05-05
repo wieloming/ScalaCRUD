@@ -9,6 +9,6 @@ case class Room(id: Option[Room.id], price: Long, hotelId: Hotel.id){
 case object Room {
   case class id(value: Long) extends AnyVal
 }
-case class RoomWithReservationsDto(room: Room, reservations: List[Reservation])
-case class RoomForRegisterDto(price: Long)
+
+
 
