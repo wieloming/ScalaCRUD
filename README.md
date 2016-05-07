@@ -29,7 +29,7 @@
 
 	route(POST):  /book
 
-	jsonFormat:  {"roomId":{"value":2},"userId":{"value":1},"period":{"from":"2016-01-01","to":"2016-02-01"}}
+	jsonFormat:  {"roomId":2,"userId":1,"period":{"from":"2016-01-01","to":"2016-02-01"}}
 
 **7. Hotel confirms a reservation.**
 

@@ -45,7 +45,7 @@ class APITest extends PlaySpecification with TestContainer with FakeServer {
       val result = route(request).get
 
       assertEquals(200, status(result))
-      contentAsString(result) mustEqual """{"hotel":{"id":{"value":1},"name":"test","city":"test"},"rooms":[]}"""
+      contentAsString(result) mustEqual """{"hotel":{"id":1,"name":"test","city":"test"},"rooms":[]}"""
     }
     "search for available hotel rooms" in {
       val request1 = FakeRequest(POST, "/hotels/1/register")
@@ -56,22 +56,21 @@ class APITest extends PlaySpecification with TestContainer with FakeServer {
       val result2 = route(request2).get
 
       assertEquals(200, status(result2))
-      contentAsString(result2) mustEqual """[{"id":{"value":2},"price":90,"hotelId":{"value":1}}]"""
+      contentAsString(result2) mustEqual """[{"id":2,"price":90,"hotelId":1}]"""
     }
   }
   "BookController" should {
     "return reservationId if can book" in {
       val request = FakeRequest(POST, "/book")
-        .withJsonBody(Json.parse("""{"roomId":{"value":2},"userId":{"value":1},"period":{"from":"2016-01-01","to":"2016-02-01"}}"""))
+        .withJsonBody(Json.parse("""{"roomId":2,"userId":1,"period":{"from":"2016-01-01","to":"2016-02-01"}}"""))
 
       val home = route(request).get
-
       status(home) must equalTo(OK)
       contentAsString(home) mustEqual """{"value":1}"""
     }
     "return not found if cant book" in {
       val request = FakeRequest(POST, "/book")
-        .withJsonBody(Json.parse("""{"roomId":{"value":2},"userId":{"value":1},"period":{"from":"2016-01-01","to":"2016-02-01"}}"""))
+        .withJsonBody(Json.parse("""{"roomId":2,"userId":1,"period":{"from":"2016-01-01","to":"2016-02-01"}}"""))
 
       val home = route(request).get
 
@@ -85,7 +84,7 @@ class APITest extends PlaySpecification with TestContainer with FakeServer {
       val result = route(request).get
 
       status(result) must equalTo(OK)
-      contentAsString(result) mustEqual """[{"id":{"value":1},"roomId":{"value":2},"userId":{"value":1},"period":{"from":"2016-01-01","to":"2016-02-01"}}]"""
+      contentAsString(result) mustEqual """[{"id":1,"roomId":2,"userId":1,"period":{"from":"2016-01-01","to":"2016-02-01"}}]"""
     }
   }
 
