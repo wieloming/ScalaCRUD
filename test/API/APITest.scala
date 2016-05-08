@@ -16,7 +16,7 @@ class APITest extends PlaySpecification with TestContainer with FakeServer {
       val result = route(request).get
 
       status(result) must equalTo(OK)
-      contentAsString(result) mustEqual """{"value":1}"""
+      contentAsString(result) mustEqual """1"""
     }
   }
 
@@ -28,7 +28,7 @@ class APITest extends PlaySpecification with TestContainer with FakeServer {
       val result = route(request).get
 
       assertEquals(200, status(result))
-      contentAsString(result) mustEqual """{"value":1}"""
+      contentAsString(result) mustEqual """1"""
     }
     "return roomId if can create room" in {
       val request = FakeRequest(POST, "/hotels/1/register")
@@ -37,7 +37,7 @@ class APITest extends PlaySpecification with TestContainer with FakeServer {
       val result = route(request).get
 
       assertEquals(200, status(result))
-      contentAsString(result) mustEqual """{"value":1}"""
+      contentAsString(result) mustEqual """1"""
     }
     "remove a room" in {
       val request = FakeRequest(DELETE, "/hotels/1/room/1")
@@ -66,7 +66,7 @@ class APITest extends PlaySpecification with TestContainer with FakeServer {
 
       val home = route(request).get
       status(home) must equalTo(OK)
-      contentAsString(home) mustEqual """{"value":1}"""
+      contentAsString(home) mustEqual """1"""
     }
     "return not found if cant book" in {
       val request = FakeRequest(POST, "/book")

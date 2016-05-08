@@ -1,5 +1,6 @@
 package domain.reservation
 
+import domain.Id
 import domain.room.Room
 import domain.user.User
 import org.joda.time.LocalDate
@@ -12,7 +13,7 @@ case class Reservation(id: Option[Reservation.id], roomId: Room.id, userId: User
   }
 }
 case object Reservation {
-  case class id(value: Long) extends AnyVal
+  case class id(value: Long) extends Id
   case class period(from: LocalDate, to: LocalDate){
     require(from isBefore to)
   }

@@ -14,7 +14,7 @@ import services.Container
 class UserController @Inject()(container: Container) extends BaseController with UserJson with ReservationJson {
 
   def createUser() = Action.async(parse.json[UserForCreateDto]) { request =>
-    container.userService.createUser(request.body).map(response => Ok(Json.toJson(response)))
+    container.userService.createUser(request.body)
   }
 
   def findUserById(id: Long) = Action.async {
