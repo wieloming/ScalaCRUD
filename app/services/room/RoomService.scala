@@ -3,6 +3,7 @@ package services.room
 import domain.hotel.Hotel
 import domain.reservation.Reservation
 import domain.room.Room
+import domain.room.Room.id
 import services.reservation.ReservationService
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import repositories.interfaces.RoomRepo
@@ -11,9 +12,9 @@ import scala.concurrent.Future
 
 class RoomService(reservationService: ReservationService, roomRepository: RoomRepo) {
 
-  def remove(id: Room.id) = roomRepository.remove(id)
+  def remove(id: Room.id): Future[Boolean] = roomRepository.remove(id)
 
-  def create(room: Room) = roomRepository.create(room: Room)
+  def create(room: Room): Future[id] = roomRepository.create(room: Room)
 
   def findByIds(ids: List[Room.id]): Future[List[Room]] = roomRepository.findByIds(ids)
 
