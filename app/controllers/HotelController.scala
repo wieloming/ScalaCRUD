@@ -29,6 +29,6 @@ class HotelController @Inject()(container: Container) extends BaseController wit
   }
 
   def findAvailableRooms(from: LocalDate, to: LocalDate, city: String, price: Long) = Action.async { request =>
-    container.hotelService.findAvailableRooms(Reservation.period(from, to), city, price)
+    container.hotelService.findAvailableRooms(Reservation.period(from, to), city, Room.price(price))
   }
 }

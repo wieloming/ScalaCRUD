@@ -1,3 +1,3 @@
 package domain.room
 
-case class RoomForRegisterDto(price: Long)
+case class RoomForRegisterDto(price: Room.price)

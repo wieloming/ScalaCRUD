@@ -42,7 +42,7 @@ class HotelService(roomService: RoomService, reservationService: ReservationServ
     } yield withRooms
   }
 
-  def findAvailableRooms(period: Reservation.period, city: String, price: Long): Future[List[Room]] = {
+  def findAvailableRooms(period: Reservation.period, city: String, price: Room.price): Future[List[Room]] = {
     def findReservations(rooms: List[Room]): Future[List[RoomWithReservationsDto]] =
       Future.traverse(rooms) {
         case room@Room(Some(id), _, _) =>

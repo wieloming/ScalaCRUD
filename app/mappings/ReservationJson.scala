@@ -7,6 +7,7 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
 trait ReservationJson extends RoomJson with UserJson {
+  //TODO: rewrite Jsons
   implicit val reservationIdFormat = Json.format[Reservation.id]
   implicit val reservationPeriodFormat = Json.format[Reservation.period]
   implicit val reservationFormat: Format[Reservation] = (

@@ -36,12 +36,13 @@ trait TestContainer {
   val roomId2 = Room.id(2L)
   val userId = User.id(1L)
 
-  val roomPrice = 20
+  val hotelName = Hotel.name("name")
+  val roomPrice = Room.price(20)
   val city = "city"
 
   val room = RoomForRegisterDto(roomPrice)
-  val hotel = HotelForCreateDto("name", city)
-  val user = UserForCreateDto("foo@test.com")
+  val hotel = HotelForCreateDto(Hotel.name("name"), city)
+  val user = UserForCreateDto(User.email("foo@test.com"))
   val oneWeekPeriod = Reservation.period(LocalDate.now, LocalDate.now.plusWeeks(1))
   def reservation(period: Reservation.period) = Reservation(None, roomId1, userId, period)
 
