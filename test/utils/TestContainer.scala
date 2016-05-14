@@ -14,7 +14,6 @@ import repositories.implementations.file.hotel.HotelFileRepository
 import repositories.implementations.file.reservation.ReservationFileRepository
 import repositories.implementations.file.room.RoomFileRepository
 import repositories.implementations.file.user.UserFileRepository
-import services.Container
 
 import scala.concurrent.{Await, Awaitable}
 import scala.concurrent.duration._

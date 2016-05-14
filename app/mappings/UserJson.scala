@@ -2,16 +2,16 @@ package mappings
 
 import domain.user.{User, UserForCreateDto}
 import play.api.libs.json._
-import play.api.libs.functional.syntax._
 
-trait UserJson {
-  //TODO: rewrite Jsons
-  //bug fix, for reading Json with only one field
-  implicit val userForCreateDtoReads: Reads[UserForCreateDto] =
-    ((JsPath \ "email").read[String] and
-      (JsPath \ "nothing").readNullable[Long])((s, nothing) => UserForCreateDto(User.email(s)))
-  implicit val userIdFormat = Json.format[User.id]
-  implicit val userWrites: Writes[User] = (
-    (JsPath \ "id").writeNullable[Long] and
-      (JsPath \ "email").write[String]
-    )((u: User) => (u.id.map(_.value), u.email.value))}
+trait UserJson extends BaseJson{
+
+  implicit val userEmailFormat =
+    oneField("email", (s: String) => User.email(s), (u: User.email) => u.value)
+  implicit val userIdFormat =
+    oneField("value", (s: Long) => User.id(s), (u: User.id) => u.value)
+  implicit val userForCreateDtoReads =
+    oneField("email", (s: String) => UserForCreateDto(User.email(s)), (u: UserForCreateDto) => u.email.value)
+
+  implicit val userWritesFormat: Format[User] = Json.format[User]
+
+}
