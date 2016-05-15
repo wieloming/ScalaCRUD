@@ -13,5 +13,4 @@ trait UserJson extends BaseJson{
     oneField("email", (s: String) => UserForCreateDto(User.email(s)), (u: UserForCreateDto) => u.email.value)
 
   implicit val userWritesFormat: Format[User] = Json.format[User]
-
 }
