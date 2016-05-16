@@ -12,7 +12,7 @@ trait HotelJson {
     ) (
     (n, c) => HotelForCreateDto(Hotel.name(n), c)
   )
-  implicit val hotelIdFormat = Json.format[Hotel.id]
+
   implicit val hotelWrites: Writes[Hotel] = (
     (JsPath \ "id").writeNullable[Long] and
     (JsPath \ "name").write[String] and
