@@ -3,7 +3,7 @@ package mappings
 import domain.user.{User, UserForCreateDto}
 import play.api.libs.json._
 
-trait UserJson extends BaseJson{
+trait UserJson extends BaseJson {
 
   implicit val userEmailFormat =
     oneField("email", (s: String) => User.email(s), (u: User.email) => u.value)

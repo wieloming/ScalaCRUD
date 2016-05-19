@@ -4,12 +4,12 @@ import java.util.concurrent.atomic.AtomicLong
 
 import domain.hotel.Hotel
 import repositories.implementations.file.BaseFileRepository
-import repositories.interfaces.{HotelRepo, UserRepo}
+import repositories.interfaces.HotelRepo
 
 import scala.collection.mutable
 import scala.concurrent.Future
 
-class HotelFileRepository extends HotelRepo with BaseFileRepository[Hotel, Hotel.id]{
+class HotelFileRepository extends HotelRepo with BaseFileRepository[Hotel, Hotel.id] {
   override val idSequence = new AtomicLong(0)
   override val db = mutable.Map[Hotel.id, Hotel]()
 
@@ -26,7 +26,7 @@ class HotelFileRepository extends HotelRepo with BaseFileRepository[Hotel, Hotel
     Future.successful(newObj)
   }
 
-  def findAllByCity(s: String): Future[List[Hotel]] = {
+  def findAllByCity(s: Hotel.city): Future[List[Hotel]] = {
     Future.successful(db.values.filter(_.city == s).toList)
   }
 }

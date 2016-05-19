@@ -22,7 +22,7 @@ class HotelServiceTest extends PlaySpecification with TestContainer {
       await(hotelService.registerRoom(hotelId, room)).get must equalTo(roomId1)
     }
     "find hotel with room after registration" in {
-      val hotelWithRoom = HotelWithRoomsDto(Hotel(Some(hotelId), hotelName, city), List(Room(Some(roomId1),roomPrice, hotelId)))
+      val hotelWithRoom = HotelWithRoomsDto(Hotel(Some(hotelId), hotelName, city), List(Room(Some(roomId1), roomPrice, hotelId)))
       await(hotelService.findById(hotelId)).get must equalTo(hotelWithRoom)
     }
   }
@@ -53,7 +53,7 @@ class HotelServiceTest extends PlaySpecification with TestContainer {
   }
   "BookService" should {
     "not found if city wrong" in {
-      val wrongCity = "city2"
+      val wrongCity = Hotel.city("city2")
       val fromDB = await(hotelService.findAvailableRooms(oneWeekPeriod, wrongCity, roomPrice))
       fromDB must equalTo(List.empty)
     }

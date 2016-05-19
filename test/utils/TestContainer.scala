@@ -37,7 +37,7 @@ trait TestContainer {
 
   val hotelName = Hotel.name("name")
   val roomPrice = Room.price(20)
-  val city = "city"
+  val city = Hotel.city("city")
 
   val room = RoomForRegisterDto(roomPrice)
   val hotel = HotelForCreateDto(Hotel.name("name"), city)

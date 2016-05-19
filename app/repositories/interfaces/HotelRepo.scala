@@ -6,5 +6,5 @@ import scala.concurrent.Future
 
 trait HotelRepo extends BaseRepo[Hotel, Hotel.id] {
 
-  def findAllByCity(s: String): Future[List[Hotel]]
+  def findAllByCity(s: Hotel.city): Future[List[Hotel]]
 }
