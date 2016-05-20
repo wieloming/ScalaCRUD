@@ -1,4 +1,2 @@
 TODO:
-2. type everything
 4. move to booking
-5. remove "value:" from id

@@ -7,7 +7,7 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import repositories.interfaces.HotelRepo
 import services.reservation.ReservationService
 import services.room.RoomService
-
+import utils.Futures._
 import scala.concurrent.Future
 
 class HotelService(roomService: RoomService, reservationService: ReservationService, hotelRepository: HotelRepo) {
@@ -44,11 +44,11 @@ class HotelService(roomService: RoomService, reservationService: ReservationServ
 
   def findAvailableRooms(period: Reservation.period, city: Hotel.city, price: Room.price): Future[List[Room]] = {
     def findReservations(rooms: List[Room]): Future[List[RoomWithReservationsDto]] =
-      Future.traverse(rooms) {
+      Future.flatTraverse(rooms) {
         case room@Room(Some(id), _, _) =>
           reservationService.findAllByRoomId(id).map(r => Some(room.addReservations(r)))
         case _ => Future.successful(None)
-      }.map(_.flatten)
+      }
     def filterBooked(rooms: List[RoomWithReservationsDto]): List[Room] =
       rooms.filter(_.reservations.forall(_.notIn(period))).map(_.room)
     for {
