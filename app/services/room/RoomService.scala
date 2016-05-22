@@ -32,15 +32,10 @@ class RoomService(reservationService: ReservationService, roomRepository: RoomRe
     } yield if (room.isDefined) Some(isFree) else None
   }
 
-  def findAllByHotelIds(ids: List[Hotel.id]): Future[List[Room]] =
+  def findAllByHotelIds(ids: Hotel.id *): Future[List[Room]] =
     for {
       rooms <- roomRepository.findAll()
       inHotels = rooms.filter(ids contains _.hotelId)
     } yield inHotels
 
-  def findAllByHotelId(hotelId: Hotel.id): Future[List[Room]] =
-    for {
-      rooms <- roomRepository.findAll()
-      inHotel = rooms.filter(_.hotelId == hotelId)
-    } yield inHotel
 }

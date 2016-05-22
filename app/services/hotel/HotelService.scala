@@ -53,7 +53,7 @@ class HotelService(roomService: RoomService, reservationService: ReservationServ
       rooms.filter(_.reservations.forall(_.notIn(period))).map(_.room)
     for {
       hotels <- hotelRepository.findAllByCity(city)
-      rooms <- roomService.findAllByHotelIds(hotels.flatMap(_.id))
+      rooms <- roomService.findAllByHotelIds(hotels.flatMap(_.id): _*)
       affordableRooms = rooms.filter(_.price >= price)
       roomsWithReservations <- findReservations(affordableRooms)
       freeRooms = filterBooked(roomsWithReservations)
@@ -62,7 +62,7 @@ class HotelService(roomService: RoomService, reservationService: ReservationServ
 
   private def getRooms(hotel: Option[Hotel], id: Hotel.id): Future[Option[HotelWithRoomsDto]] =
     hotel match {
-      case Some(h) => roomService.findAllByHotelId(id).map(h.addRooms).map(Some(_))
+      case Some(h) => roomService.findAllByHotelIds(id).map(h.addRooms).map(Some(_))
       case _ => Future.successful(None)
     }
 }
