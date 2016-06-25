@@ -1,10 +1,8 @@
 package repositories.implementations.file.user
 
-import domain.user.User
-
-import collection.mutable
 import java.util.concurrent.atomic.AtomicLong
 
+import domain.user.User
 import repositories.implementations.file.BaseFileRepository
 import repositories.interfaces.UserRepo
 
@@ -13,7 +11,7 @@ import scala.concurrent.Future
 
 class UserFileRepository extends UserRepo with BaseFileRepository[User, User.id] {
   override val idSequence = new AtomicLong(0)
-  override val db = mutable.Map[User.id, User]()
+  override val db = scala.collection.concurrent.TrieMap[User.id, User]()
 
   def create(obj: User): Future[User.id] = {
     val newId = User.id(idSequence.incrementAndGet())

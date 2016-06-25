@@ -6,12 +6,11 @@ import domain.hotel.Hotel
 import repositories.implementations.file.BaseFileRepository
 import repositories.interfaces.HotelRepo
 
-import scala.collection.mutable
 import scala.concurrent.Future
 
 class HotelFileRepository extends HotelRepo with BaseFileRepository[Hotel, Hotel.id] {
   override val idSequence = new AtomicLong(0)
-  override val db = mutable.Map[Hotel.id, Hotel]()
+  override val db = scala.collection.concurrent.TrieMap[Hotel.id, Hotel]()
 
   def create(obj: Hotel): Future[Hotel.id] = {
     val newId = Hotel.id(idSequence.incrementAndGet())

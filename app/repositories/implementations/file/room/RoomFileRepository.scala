@@ -6,12 +6,11 @@ import domain.room.Room
 import repositories.implementations.file.BaseFileRepository
 import repositories.interfaces.RoomRepo
 
-import scala.collection.mutable
 import scala.concurrent.Future
 
 class RoomFileRepository extends RoomRepo with BaseFileRepository[Room, Room.id] {
   override val idSequence = new AtomicLong(0)
-  override val db = mutable.Map[Room.id, Room]()
+  override val db = scala.collection.concurrent.TrieMap[Room.id, Room]()
 
   def create(obj: Room): Future[Room.id] = {
     val newId = Room.id(idSequence.incrementAndGet())
