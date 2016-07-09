@@ -13,21 +13,21 @@ class BaseController extends Controller {
     future.map(response => Ok(Json.toJson(response)))
 
   implicit def resultIfExists[T: Writes](future: Future[Option[T]]): Future[Result] =
-    future.map { option =>
-      if (option.isDefined) Ok(Json.toJson(option))
-      else NotFound
+    future.map {
+      case Some(el) => Ok(Json.toJson(el))
+      case _ => NotFound
     }
   implicit def resultIfNonEmpty[T: Writes](future: Future[List[T]]): Future[Result] =
-    future.map { option =>
-      if (option.nonEmpty) Ok(Json.toJson(option))
-      else NotFound
+    future.map {
+      case Nil => NotFound
+      case list => Ok(Json.toJson(list))
     }
 
   implicit def resultId[T <: Id](future: Future[T]): Future[Result] =
     future.map(response => Ok(Json.toJson(response.value)))
   implicit def resultIfExistsId[T <: Id](future: Future[Option[T]]): Future[Result] =
-    future.map { option =>
-      if (option.isDefined) Ok(Json.toJson(option.map(_.value)))
-      else NotFound
+    future.map {
+      case Some(el) => Ok(Json.toJson(el.value))
+      case _ => NotFound
     }
 }

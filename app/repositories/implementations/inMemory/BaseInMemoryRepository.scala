@@ -1,4 +1,4 @@
-package repositories.implementations.file
+package repositories.implementations.inMemory
 
 import java.util.concurrent.atomic.AtomicLong
 
@@ -7,7 +7,7 @@ import repositories.interfaces.BaseRepo
 import scala.collection.mutable
 import scala.concurrent.Future
 
-trait BaseFileRepository[T, Id] extends BaseRepo[T, Id]{
+trait BaseInMemoryRepository[T, Id] extends BaseRepo[T, Id]{
   protected val db: mutable.Map[Id, T]
   protected val idSequence: AtomicLong
 

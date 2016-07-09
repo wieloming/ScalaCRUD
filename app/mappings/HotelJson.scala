@@ -9,7 +9,7 @@ trait HotelJson {
     (JsPath \ "name").read[String] and
       (JsPath \ "city").read[String]
     ) (
-    (n, c) => HotelForCreateDto(Hotel.name(n), Hotel.city(c))
+    (n, c) => HotelForCreateDto(Hotel.Name(n), Hotel.City(c))
   )
 
   implicit val hotelWrites: Writes[Hotel] = (

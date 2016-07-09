@@ -1,3 +1,3 @@
 package domain.user
 
-case class UserForCreateDto(email: User.email)
+case class UserForCreateDto(email: User.Email)

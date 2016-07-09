@@ -12,7 +12,7 @@ import scala.concurrent.Future
 
 class BookService(roomService: RoomService, reservationService: ReservationService, userService: UserService) {
 
-  def book(reservation: Reservation): Future[Option[Reservation.id]] = {
+  def book(reservation: Reservation): Future[Option[Reservation.Id]] = {
     def createReservationIfValid(user: Option[User], room: Option[Room], isFree: Option[Boolean], reservation: Reservation) =
       (user, room, isFree) match {
         case (Some(u), Some(r), Some(true)) => reservationService.create(reservation).map(Some(_))

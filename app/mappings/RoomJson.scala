@@ -8,7 +8,7 @@ import play.api.libs.json._
 trait RoomJson extends UserJson with HotelJson {
 
   implicit val RoomForRegisterDtoFormat =
-    oneField("price", (s: Long) => RoomForRegisterDto(Room.price(s)), (u: RoomForRegisterDto) => u.price.value)
+    oneField("price", (s: Long) => RoomForRegisterDto(Room.Price(s)), (u: RoomForRegisterDto) => u.price.value)
 
   implicit val roomWrites: Writes[Room] = (
     (JsPath \ "id").writeNullable[Long] and

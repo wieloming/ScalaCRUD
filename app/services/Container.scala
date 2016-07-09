@@ -2,10 +2,10 @@ package services
 
 import javax.inject.Singleton
 
-import repositories.implementations.file.hotel.HotelFileRepository
-import repositories.implementations.file.reservation.ReservationFileRepository
-import repositories.implementations.file.room.RoomFileRepository
-import repositories.implementations.file.user.UserFileRepository
+import repositories.implementations.inMemory.hotel.HotelInMemoryRepository
+import repositories.implementations.inMemory.reservation.ReservationInMemoryRepository
+import repositories.implementations.inMemory.room.RoomInMemoryRepository
+import repositories.implementations.inMemory.user.UserInMemoryRepository
 import services.book.BookService
 import services.hotel.HotelService
 import services.reservation.ReservationService
@@ -14,10 +14,10 @@ import services.user.UserService
 
 @Singleton
 class Container {
-  val reservationRepository = new ReservationFileRepository
-  val userRepository = new UserFileRepository
-  val roomRepository = new RoomFileRepository
-  val hotelRepository = new HotelFileRepository
+  val reservationRepository = new ReservationInMemoryRepository
+  val userRepository = new UserInMemoryRepository
+  val roomRepository = new RoomInMemoryRepository
+  val hotelRepository = new HotelInMemoryRepository
 
   val reservationService = new ReservationService(reservationRepository)
   val userService = new UserService(reservationService, userRepository)

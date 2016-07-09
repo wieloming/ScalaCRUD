@@ -13,7 +13,7 @@ class UserServiceTest extends PlaySpecification with TestContainer {
       userId must equalTo(created)
     }
     "return user from DB after creating" in {
-      await(userService.findById(userId)).get must equalTo(User(Some(userId), User.email("foo@test.com")))
+      await(userService.findById(userId)).get must equalTo(User(Some(userId), User.Email("foo@test.com")))
     }
   }
   "UserService" should {

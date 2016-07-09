@@ -1,11 +1,8 @@
 package domain.user
 
-import domain.Id
-
-
-case class User(id: Option[User.id], email: User.email)
+case class User(id: Option[User.Id], email: User.Email)
 object User {
-  case class id(value: Long) extends Id
-  case class email(value: String)
+  case class Id(value: Long) extends domain.Id
+  case class Email(value: String)
 }
 

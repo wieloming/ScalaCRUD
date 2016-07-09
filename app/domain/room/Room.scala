@@ -1,18 +1,17 @@
 package domain.room
 
-import domain.Id
 import domain.hotel.Hotel
 import domain.reservation.Reservation
 
-case class Room(id: Option[Room.id], price: Room.price, hotelId: Hotel.id){
+case class Room(id: Option[Room.Id], price: Room.Price, hotelId: Hotel.Id){
   def addReservations(reservations: List[Reservation]) = RoomWithReservationsDto(this, reservations)
 }
 case object Room {
-  case class id(value: Long) extends Id
-  case class price(value: Long){
-    def >=(that: price) = this.value >= that.value
-    def +(that: price) = price(this.value + that.value)
-    def -(that: price) = price(this.value - that.value)
+  case class Id(value: Long) extends domain.Id
+  case class Price(value: Long){
+    def >=(that: Price) = this.value >= that.value
+    def +(that: Price) = Price(this.value + that.value)
+    def -(that: Price) = Price(this.value - that.value)
   }
 }
 

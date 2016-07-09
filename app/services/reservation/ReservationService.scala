@@ -10,19 +10,19 @@ import scala.concurrent.Future
 
 class ReservationService(reservationRepository: ReservationRepo) {
 
-  def create(reservation: Reservation): Future[Reservation.id] = {
+  def create(reservation: Reservation): Future[Reservation.Id] = {
     reservationRepository.create(reservation)
   }
 
-  def findByIds(ids: List[Reservation.id]): Future[List[Reservation]] = {
+  def findByIds(ids: List[Reservation.Id]): Future[List[Reservation]] = {
     reservationRepository.findByIds(ids)
   }
 
-  def findAllByUserId(id: User.id): Future[List[Reservation]] = {
+  def findAllByUserId(id: User.Id): Future[List[Reservation]] = {
     reservationRepository.findAllForUser(id)
   }
 
-  def findAllByRoomId(id: Room.id): Future[List[Reservation]] = {
+  def findAllByRoomId(id: Room.Id): Future[List[Reservation]] = {
     for {
       reservations <- reservationRepository.findAll()
       inRoom = reservations.filter(_.roomId == id)

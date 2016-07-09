@@ -5,6 +5,6 @@ import domain.user.User
 
 import scala.concurrent.Future
 
-trait ReservationRepo extends BaseRepo[Reservation, Reservation.id] {
-   def findAllForUser(id: User.id): Future[List[Reservation]]
+trait ReservationRepo extends BaseRepo[Reservation, Reservation.Id] {
+   def findAllForUser(id: User.Id): Future[List[Reservation]]
 }

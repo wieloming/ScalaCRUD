@@ -18,10 +18,10 @@ class UserController @Inject()(container: Container) extends BaseController with
   }
 
   def findUserById(id: Long) = Action.async {
-    container.userService.findById(User.id(id))
+    container.userService.findById(User.Id(id))
   }
 
   def findReservations(id: Long) = Action.async {
-    container.userService.findReservations(User.id(id))
+    container.userService.findReservations(User.Id(id))
   }
 }

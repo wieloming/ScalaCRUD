@@ -12,18 +12,18 @@ import scala.concurrent.Future
 
 class HotelService(roomService: RoomService, reservationService: ReservationService, hotelRepository: HotelRepo) {
 
-  def createHotel(hotel: HotelForCreateDto): Future[Hotel.id] = {
+  def createHotel(hotel: HotelForCreateDto): Future[Hotel.Id] = {
     hotelRepository.create(Hotel(None, hotel.name, hotel.city))
   }
 
-  def findById(id: Hotel.id): Future[Option[HotelWithRoomsDto]] = {
+  def findById(id: Hotel.Id): Future[Option[HotelWithRoomsDto]] = {
     for {
       hotel <- hotelRepository.findById(id)
       withRooms <- getRooms(hotel, id)
     } yield withRooms
   }
 
-  def registerRoom(hotelId: Hotel.id, newRoom: RoomForRegisterDto): Future[Option[Room.id]] = {
+  def registerRoom(hotelId: Hotel.Id, newRoom: RoomForRegisterDto): Future[Option[Room.Id]] = {
     def createRoom(hotel: Option[Hotel]) = hotel match {
       case Some(h) => roomService.create(Room(None, newRoom.price, hotelId)).map(Some(_))
       case _ => Future.successful(None)
@@ -34,7 +34,7 @@ class HotelService(roomService: RoomService, reservationService: ReservationServ
     } yield roomId
   }
 
-  def removeRoom(hotelId: Hotel.id, roomId: Room.id): Future[Option[HotelWithRoomsDto]] = {
+  def removeRoom(hotelId: Hotel.Id, roomId: Room.Id): Future[Option[HotelWithRoomsDto]] = {
     for {
       hotel <- hotelRepository.findById(hotelId)
       _ = hotel.map(h => roomService.remove(roomId))
@@ -42,7 +42,7 @@ class HotelService(roomService: RoomService, reservationService: ReservationServ
     } yield withRooms
   }
 
-  def findAvailableRooms(period: Reservation.period, city: Hotel.city, price: Room.price): Future[List[Room]] = {
+  def findAvailableRooms(period: Reservation.Period, city: Hotel.City, price: Room.Price): Future[List[Room]] = {
     def findReservations(rooms: List[Room]): Future[List[RoomWithReservationsDto]] =
       Future.flatTraverse(rooms) {
         case room@Room(Some(id), _, _) =>
@@ -60,7 +60,7 @@ class HotelService(roomService: RoomService, reservationService: ReservationServ
     } yield freeRooms
   }
 
-  private def getRooms(hotel: Option[Hotel], id: Hotel.id): Future[Option[HotelWithRoomsDto]] =
+  private def getRooms(hotel: Option[Hotel], id: Hotel.Id): Future[Option[HotelWithRoomsDto]] =
     hotel match {
       case Some(h) => roomService.findAllByHotelIds(id).map(h.addRooms).map(Some(_))
       case _ => Future.successful(None)
