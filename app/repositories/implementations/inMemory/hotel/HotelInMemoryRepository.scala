@@ -2,6 +2,7 @@ package repositories.implementations.inMemory.hotel
 
 import java.util.concurrent.atomic.AtomicLong
 
+import domain.DBid
 import domain.hotel.Hotel
 import repositories.implementations.inMemory.BaseInMemoryRepository
 import repositories.interfaces.HotelRepo
@@ -14,18 +15,17 @@ class HotelInMemoryRepository extends HotelRepo with BaseInMemoryRepository[Hote
 
   def create(obj: Hotel): Future[Hotel.Id] = {
     val newId = Hotel.Id(idSequence.incrementAndGet())
-    val newObj = obj.copy(id = Some(newId))
-    db(newId) = newObj
+    db(newId) = obj
     Future.successful(newId)
   }
 
-  def update(id: Hotel.Id, obj: Hotel): Future[Hotel] = {
-    val newObj = obj.copy(id = Some(id))
-    db(id) = newObj
-    Future.successful(newObj)
+  def update(id: Hotel.Id, obj: Hotel): Future[Hotel with DBid[Hotel.Id]] = {
+    db(id) = obj
+    Future.successful(obj.withId(id))
   }
 
-  def findAllByCity(s: Hotel.City): Future[List[Hotel]] = {
-    Future.successful(db.values.filter(_.city == s).toList)
+  def findAllByCity(s: Hotel.City): Future[List[Hotel with DBid[Hotel.Id]]] = {
+    val res = db.map{ case (k, v) => v.withId(k)}.filter(_.city == s).toList
+    Future.successful(res)
   }
 }
