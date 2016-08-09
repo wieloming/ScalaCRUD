@@ -4,15 +4,15 @@ import scala.concurrent.Future
 
 trait BaseRepo[T, Id] {
 
-  def create(obj: T): Future[Id]
+  def create(obj: Validated[T]): Future[Either[Errors,Id]]
 
-  def update(id: Id, el: T): Future[T]
+  def update(id: Id, el: Validated[T]): Future[Either[Errors,Validated[T]]]
 
-  def findById(id: Id): Future[Option[T]]
+  def findById(id: Id): Future[Either[Errors,Option[Validated[T]]]]
 
-  def findAll(): Future[List[T]]
+  def findAll(): Future[Either[Errors,List[Validated[T]]]]
 
-  def findByIds(ids: List[Id]): Future[List[T]]
+  def findByIds(ids: List[Id]): Future[Either[Errors,List[Validated[T]]]]
 
-  def remove(id: Id): Future[Boolean]
+  def remove(id: Id): Future[Either[Errors,Validated[T]]]
 }

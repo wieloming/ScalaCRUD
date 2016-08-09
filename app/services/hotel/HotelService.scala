@@ -4,23 +4,26 @@ import domain.hotel.{Hotel, HotelForCreateDto, HotelWithRoomsDto}
 import domain.reservation.Reservation
 import domain.room.{Room, RoomForRegisterDto, RoomWithReservationsDto}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import repositories.interfaces.HotelRepo
+import repositories.interfaces.{Errors, HotelRepo, Validated}
 import services.reservation.ReservationService
 import services.room.RoomService
 import utils.Futures._
+
 import scala.concurrent.Future
 
 class HotelService(roomService: RoomService, reservationService: ReservationService, hotelRepository: HotelRepo) {
 
-  def createHotel(hotel: HotelForCreateDto): Future[Hotel.Id] = {
-    hotelRepository.create(Hotel(None, hotel.name, hotel.city))
+  def createHotel(hotel: HotelForCreateDto): Future[Either[Errors, Hotel.Id]] = {
+    hotelRepository.create(hotel.toValidHotel)
   }
 
-  def findById(id: Hotel.Id): Future[Option[HotelWithRoomsDto]] = {
-    for {
-      hotel <- hotelRepository.findById(id)
-      withRooms <- getRooms(hotel, id)
-    } yield withRooms
+  //TODO: create some method on Either... or custom type
+  def findById(id: Hotel.Id): Future[Either[Errors, Option[HotelWithRoomsDto]]] = {
+    hotelRepository.findById(id).flatMap {
+      case Right(Some(Validated(h))) => getRooms(h, id).map(h => Right(Some(h)))
+      case Right(None) => Future.successful(Right(None))
+      case Left(errors) => Future.successful(Left(errors))
+    }
   }
 
   def registerRoom(hotelId: Hotel.Id, newRoom: RoomForRegisterDto): Future[Option[Room.Id]] = {
@@ -60,9 +63,6 @@ class HotelService(roomService: RoomService, reservationService: ReservationServ
     } yield freeRooms
   }
 
-  private def getRooms(hotel: Option[Hotel], id: Hotel.Id): Future[Option[HotelWithRoomsDto]] =
-    hotel match {
-      case Some(h) => roomService.findAllByHotelIds(id).map(h.addRooms).map(Some(_))
-      case _ => Future.successful(None)
-    }
+  private def getRooms(hotel: Hotel, id: Hotel.Id): Future[HotelWithRoomsDto] =
+    roomService.findAllByHotelIds(id).map(hotel.addRooms)
 }

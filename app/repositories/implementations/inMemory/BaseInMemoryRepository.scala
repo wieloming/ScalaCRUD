@@ -2,31 +2,42 @@ package repositories.implementations.inMemory
 
 import java.util.concurrent.atomic.AtomicLong
 
-import repositories.interfaces.BaseRepo
+import repositories.interfaces.{BaseRepo, Errors, Validated}
 
-import scala.collection.mutable
 import scala.concurrent.Future
 
-trait BaseInMemoryRepository[T, Id] extends BaseRepo[T, Id]{
-  protected val db: mutable.Map[Id, T]
+trait BaseInMemoryRepository[T, Id] extends BaseRepo[T, Id] {
+  protected val db: scala.collection.concurrent.TrieMap[Id, T]
   protected val idSequence: AtomicLong
 
-  def create(obj: T): Future[Id]
-  def update(id: Id, el: T): Future[T]
+  override def create(obj: Validated[T]): Future[Either[Errors, Id]]
+  override def update(id: Id, el: Validated[T]): Future[Either[Errors, Validated[T]]]
 
-  def findById(id: Id): Future[Option[T]] = {
-    Future.successful(db.get(id))
+  override def findByIds(ids: List[Id]): Future[Either[Errors, List[Validated[T]]]] = {
+    val objects = ids.map(id => (id, db.get(id)))
+    val (errors, validated) = objects.foldLeft((Errors.empty, List.empty[Validated[T]])) {
+      case ((errs, vs), (id, Some(t))) => (errs, vs :+ Validated(t))
+      case ((errs, vs), (id, None)) => (errs + Errors.single("No element with id: " + id), vs)
+    }
+    if (errors.isEmpty) Future.successful(Right(validated))
+    else Future.successful(Left(errors))
   }
-
-  def findAll(): Future[List[T]] = {
-    Future.successful(db.values.toList)
+  override def findById(id: Id): Future[Either[Errors, Option[Validated[T]]]] = {
+    db.get(id) match {
+      case Some(t) => Future.successful(Right(Some(Validated(t))))
+      case None => Future.successful(Right(None))
+    }
   }
-
-  def findByIds(ids: List[Id]): Future[List[T]] = {
-    Future.successful(db.filter(r => ids contains r._1).values.toList)
+  //TODO: breakout?
+  override def findAll(): Future[Either[Errors, List[Validated[T]]]] = {
+    Future.successful(Right(db.values.toList.map(Validated(_))))
   }
-
-  def remove(id: Id): Future[Boolean] = {
-    Future.successful(db.remove(id).isDefined)
+  override def remove(id: Id): Future[Either[Errors, Validated[T]]] = {
+    db.get(id) match {
+      case Some(t) =>
+        db.remove(id)
+        Future.successful(Right(Validated(t)))
+      case None => Future.successful(Left(Errors.single("No element with id: " + id + " in db")))
+    }
   }
 }

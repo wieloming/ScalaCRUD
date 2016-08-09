@@ -3,8 +3,12 @@ package domain.reservation
 import domain.room.Room
 import domain.user.User
 import org.joda.time.LocalDate
+import repositories.interfaces.Validated
 
 case class Reservation(id: Option[Reservation.Id], roomId: Room.Id, userId: User.Id, period: Reservation.Period) {
+  //TODO
+  def validate: Validated[Reservation] = Validated(this)
+
   def notIn(p: Reservation.Period): Boolean = {
     val bothBefore = (period.from isBefore p.from) && (period.to isBefore p.to)
     val bothAfter = (period.from isAfter p.from) && (period.to isAfter p.to)

@@ -1,8 +1,12 @@
 package domain.hotel
 
 import domain.room.Room
+import repositories.interfaces.Validated
 
 case class Hotel(id: Option[Hotel.Id], name: Hotel.Name, city: Hotel.City){
+  //TODO
+  def validate: Validated[Hotel] = Validated(this)
+
   def addRooms(rooms: List[Room]): HotelWithRoomsDto = HotelWithRoomsDto(this, rooms)
 }
 case object Hotel {
