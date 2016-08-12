@@ -8,17 +8,17 @@ import repositories.interfaces.{Errors, HotelRepo, Validated}
 import services.reservation.ReservationService
 import services.room.RoomService
 import utils.Futures._
+import utils.ValidDataOrErrors
 
 import scala.concurrent.Future
 
 class HotelService(roomService: RoomService, reservationService: ReservationService, hotelRepository: HotelRepo) {
 
-  def createHotel(hotel: HotelForCreateDto): Future[Either[Errors, Hotel.Id]] = {
+  def createHotel(hotel: HotelForCreateDto): ValidDataOrErrors[Hotel] = {
     hotelRepository.create(hotel.toValidHotel)
   }
 
-  //TODO: create some method on Either... or custom type
-  def findById(id: Hotel.Id): Future[Either[Errors, Option[HotelWithRoomsDto]]] = {
+  def findById(id: Hotel.Id) = {
     hotelRepository.findById(id).flatMap {
       case Right(Some(Validated(h))) => getRooms(h, id).map(h => Right(Some(h)))
       case Right(None) => Future.successful(Right(None))

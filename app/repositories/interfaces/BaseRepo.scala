@@ -1,18 +1,18 @@
 package repositories.interfaces
 
-import scala.concurrent.Future
+import utils.{ValidDataListOrErrors, ValidDataOrErrors}
 
 trait BaseRepo[T, Id] {
 
-  def create(obj: Validated[T]): Future[Either[Errors,Id]]
+  def create(obj: Validated[T]): ValidDataOrErrors[T]
 
-  def update(id: Id, el: Validated[T]): Future[Either[Errors,Validated[T]]]
+  def update(id: Id, el: Validated[T]): ValidDataOrErrors[T]
 
-  def findById(id: Id): Future[Either[Errors,Option[Validated[T]]]]
+  def findById(id: Id): ValidDataOrErrors[T]
 
-  def findAll(): Future[Either[Errors,List[Validated[T]]]]
+  def findAll(): ValidDataListOrErrors[T]
 
-  def findByIds(ids: List[Id]): Future[Either[Errors,List[Validated[T]]]]
+  def findByIds(ids: List[Id]): ValidDataListOrErrors[T]
 
-  def remove(id: Id): Future[Either[Errors,Validated[T]]]
+  def remove(id: Id): ValidDataOrErrors[T]
 }

@@ -2,9 +2,8 @@ package repositories.interfaces
 
 import domain.reservation.Reservation
 import domain.user.User
-
-import scala.concurrent.Future
+import utils.ValidDataListOrErrors
 
 trait ReservationRepo extends BaseRepo[Reservation, Reservation.Id] {
-   def findAllForUser(id: User.Id): Future[Either[Errors,List[Validated[Reservation]]]]
+   def findAllForUser(id: User.Id): ValidDataListOrErrors[Reservation]
 }

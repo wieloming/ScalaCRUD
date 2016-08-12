@@ -7,19 +7,20 @@ import domain.room.Room.Id
 import services.reservation.ReservationService
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import repositories.interfaces.{Errors, RoomRepo, Validated}
+import utils.{ValidDataListOrErrors, ValidDataOrErrors}
 
 import scala.concurrent.Future
 
 class RoomService(reservationService: ReservationService, roomRepository: RoomRepo) {
 
-  def remove(id: Room.Id): Future[Either[Errors, Validated[Room]]] = roomRepository.remove(id)
+  def remove(id: Room.Id): ValidDataOrErrors[Room] = roomRepository.remove(id)
 
-  def create(room: Room): Future[Either[Errors, Room.Id]] = roomRepository.create(room.validate)
+  def create(room: Room): ValidDataOrErrors[Room] = roomRepository.create(room.validate)
 
-  def findByIds(ids: List[Room.Id]): Future[Either[Errors, List[Validated[Room]]]] =
+  def findByIds(ids: List[Room.Id]): ValidDataListOrErrors[Room] =
     roomRepository.findByIds(ids)
 
-  def findById(id: Room.Id): Future[Either[Errors, Option[Validated[Room]]]] =
+  def findById(id: Room.Id): ValidDataOrErrors[Room] =
     roomRepository.findById(id)
 
   def isFreeBetween(roomId: Room.Id, period: Reservation.Period): Future[Option[Boolean]] = {
@@ -34,10 +35,9 @@ class RoomService(reservationService: ReservationService, roomRepository: RoomRe
     } yield if (room.isDefined) Some(isFree) else None
   }
 
-  def findAllByHotelIds(ids: Hotel.Id *): Future[List[Room]] =
+  def findAllByHotelIds(ids: Hotel.Id *): ValidDataListOrErrors[Room] =
     for {
-      rooms <- roomRepository.findAll()
-      inHotels = rooms.filter(ids contains _.hotelId)
-    } yield inHotels
+      room <- roomRepository.findAll() if ids contains room.hotelId
+    } yield room
 
 }

@@ -2,22 +2,21 @@ package services.user
 
 import domain.reservation.Reservation
 import domain.user.{User, UserForCreateDto}
-import repositories.interfaces.{Errors, UserRepo, Validated}
+import repositories.interfaces.UserRepo
 import services.reservation.ReservationService
-
-import scala.concurrent.Future
+import utils.{ValidDataListOrErrors, ValidDataOrErrors}
 
 class UserService(reservationService: ReservationService, userRepository: UserRepo) {
 
-  def createUser(user: UserForCreateDto): Future[Either[Errors, User.Id]] = {
+  def createUser(user: UserForCreateDto): ValidDataOrErrors[User] = {
     userRepository.create(User(None, user.email).validate)
   }
 
-  def findById(id: User.Id): Future[Either[Errors, Option[Validated[User]]]] = {
+  def findById(id: User.Id): ValidDataOrErrors[User] = {
     userRepository.findById(id)
   }
 
-  def findReservations(id: User.Id): Future[Either[Errors, List[Validated[Reservation]]]] = {
+  def findReservations(id: User.Id): ValidDataListOrErrors[Reservation] = {
     reservationService.findAllByUserId(id)
   }
 }
