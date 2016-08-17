@@ -1,28 +1,20 @@
 package services.book
 
 import domain.reservation.Reservation
-import domain.room.Room
-import domain.user.User
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import repositories.interfaces.FromDB
 import services.reservation.ReservationService
 import services.room.RoomService
 import services.user.UserService
-
-import scala.concurrent.Future
+import utils.ValueOrErrors
 
 class BookService(roomService: RoomService, reservationService: ReservationService, userService: UserService) {
 
-  def book(reservation: Reservation): Future[Option[Reservation.Id]] = {
-    def createReservationIfValid(user: Option[User], room: Option[Room], isFree: Option[Boolean], reservation: Reservation) =
-      (user, room, isFree) match {
-        case (Some(u), Some(r), Some(true)) => reservationService.create(reservation).map(Some(_))
-        case _ => Future.successful(None)
-      }
+  def book(reservation: Reservation): ValueOrErrors[FromDB[Reservation]] = {
     for {
       user <- userService.findById(reservation.userId)
       room <- roomService.findById(reservation.roomId)
       isFree <- roomService.isFreeBetween(reservation.roomId, reservation.period)
-      reservationId <- createReservationIfValid(user, room, isFree, reservation)
-    } yield reservationId
+      reservation <- reservationService.create(reservation)
+    } yield reservation
   }
 }

@@ -2,6 +2,7 @@ package domain.user
 
 import repositories.interfaces.Validated
 
+
 case class User(id: Option[User.Id], email: User.Email) {
   //TODO: validate
   def validate: Validated[User] = Validated(this)

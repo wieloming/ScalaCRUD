@@ -1,18 +1,18 @@
 package repositories.interfaces
 
-import utils.{ValidDataListOrErrors, ValidDataOrErrors}
+import utils.ValueOrErrors
 
 trait BaseRepo[T, Id] {
 
-  def create(obj: Validated[T]): ValidDataOrErrors[T]
+  def create(obj: Validated[T]): ValueOrErrors[FromDB[T]]
 
-  def update(id: Id, el: Validated[T]): ValidDataOrErrors[T]
+  def update(id: Id, el: Validated[T]): ValueOrErrors[FromDB[T]]
 
-  def findById(id: Id): ValidDataOrErrors[T]
+  def findById(id: Id): ValueOrErrors[FromDB[T]]
 
-  def findAll(): ValidDataListOrErrors[T]
+  def findAll(): ValueOrErrors[List[FromDB[T]]]
 
-  def findByIds(ids: List[Id]): ValidDataListOrErrors[T]
+  def findByIds(ids: List[Id]): ValueOrErrors[List[FromDB[T]]]
 
-  def remove(id: Id): ValidDataOrErrors[T]
+  def remove(id: Id): ValueOrErrors[FromDB[T]]
 }

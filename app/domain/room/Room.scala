@@ -2,13 +2,13 @@ package domain.room
 
 import domain.hotel.Hotel
 import domain.reservation.Reservation
-import repositories.interfaces.Validated
+import repositories.interfaces.{FromDB, Validated}
 
 case class Room(id: Option[Room.Id], price: Room.Price, hotelId: Hotel.Id){
   //TODO
   def validate: Validated[Room] = Validated(this)
 
-  def addReservations(reservations: List[Reservation]) = RoomWithReservationsDto(this, reservations)
+  def addReservations(reservations: List[FromDB[Reservation]]) = RoomWithReservationsDto(this, reservations)
 }
 case object Room {
   case class Id(value: Long) extends domain.Id
