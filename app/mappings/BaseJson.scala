@@ -8,4 +8,5 @@ trait BaseJson {
   def oneField[T, G: Format](name: String, f: G => T, f2: T => G): Format[T] =
     (((JsPath \ name).format[G] and (JsPath \ "nothing").formatNullable[Long])
       ((s, nothing) => f(s), (t: T) => (f2(t), None)))
+
 }

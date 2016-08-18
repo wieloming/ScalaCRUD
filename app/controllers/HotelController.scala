@@ -25,7 +25,7 @@ class HotelController @Inject()(container: Container) extends BaseController wit
   }
 
   def removeRoom(hotelId: Long, roomId: Long) = Action.async {
-    container.hotelService.removeRoom(Hotel.Id(hotelId), Room.Id(roomId))
+    container.roomService.remove(Room.Id(roomId))
   }
 
   def findAvailableRooms(from: LocalDate, to: LocalDate, city: String, price: Long) = Action.async { request =>

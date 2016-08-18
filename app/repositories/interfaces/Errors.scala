@@ -1,5 +1,6 @@
 package repositories.interfaces
 
+//TODO: errorTypes
 case class Errors(list: List[String]){
   def +(errors: Errors) = Errors(list ++ errors.list)
   def isEmpty = list.isEmpty

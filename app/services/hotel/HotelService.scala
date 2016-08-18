@@ -26,13 +26,13 @@ class HotelService(roomService: RoomService, reservationService: ReservationServ
   }
 
   def findAvailableRooms(period: Reservation.Period, city: Hotel.City, price: Room.Price): ValueOrErrors[List[FromDB[Room]]] = {
-    def filterBooked(rooms: List[FromDB[RoomWithReservationsDto]]): List[Room] =
+    def filterBooked(rooms: List[RoomWithReservationsDto]): List[Room] =
       rooms.filter(_.reservations.forall(_.notIn(period))).map(_.room)
     for {
       hotels <- hotelRepository.findAllByCity(city)
       rooms <- roomService.findAllByHotelIds(hotels.map(_.id): _*)
       affordableRooms = rooms.filter(_.price >= price)
-      roomsWithReservations <- ValueOrErrors.traverse(rooms)(r => reservationService.findAllByRoomId(r.id).map(d => r.addReservations(d)))
+      roomsWithReservations <- ValueOrErrors.traverse(rooms)(r => reservationService.findAllByRoomId(r.id).map(r.addReservations))
       freeRooms = filterBooked(roomsWithReservations)
     } yield freeRooms
   }
