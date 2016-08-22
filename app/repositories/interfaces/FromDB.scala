@@ -1,10 +1,10 @@
 package repositories.interfaces
-import domain.Id
+import domain.{WithId, Id}
 
 import scala.language.implicitConversions
 
 //TODO: id as field
-case class FromDB[T <: {def id[B <: Id]: Some[B]}](value: T) {
+case class FromDB[T <: WithId[T]](value: T) {
   def id = value.id.get
 }
 

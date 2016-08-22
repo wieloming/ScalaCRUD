@@ -9,14 +9,14 @@ case class ValueOrErrors[T](value: Future[Either[Errors, T]]) {
     ValueOrErrors(value.map(_.right.map(el => f(el))))
 
   //TODO fix flatMap
-  def flatMap[F](f: T => Either[Errors, F]): ValueOrErrors[F] = {
-    val dataF = value.map {
-      case Left(errors) => Left(errors)
-      case Right(data) => f(data)
-    }
-    ValueOrErrors(dataF)
+  def flatMap[F](f: T => ValueOrErrors[F]): ValueOrErrors[F] = {
+    ValueOrErrors(value.flatMap {
+      case Left(errors) => Future.successful(Left(errors))
+      case Right(data) => f(data).value
+    })
   }
 
+  //TODO: filter / withFilter
   //  def filter(q: T => Boolean): ValueOrErrors[T] = {
   //  }
 

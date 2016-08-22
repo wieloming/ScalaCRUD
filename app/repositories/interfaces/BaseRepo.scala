@@ -1,8 +1,9 @@
 package repositories.interfaces
 
+import domain.WithId
 import utils.ValueOrErrors
 
-trait BaseRepo[T <: {def id[B <: Id]: Some[B]}, Id] {
+trait BaseRepo[T <: WithId[T], Id] {
 
   def create(obj: Validated[T]): ValueOrErrors[FromDB[T]]
 

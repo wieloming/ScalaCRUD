@@ -1,11 +1,12 @@
 package domain.reservation
 
+import domain.WithId
 import domain.room.Room
 import domain.user.User
 import org.joda.time.LocalDate
 import repositories.interfaces.Validated
 
-case class Reservation(id: Option[Reservation.Id], roomId: Room.Id, userId: User.Id, period: Reservation.Period) {
+case class Reservation(id: Option[Reservation.Id], roomId: Room.Id, userId: User.Id, period: Reservation.Period) extends WithId[Reservation.Id]  {
   //TODO
   def validate: Validated[Reservation] = Validated(this)
 

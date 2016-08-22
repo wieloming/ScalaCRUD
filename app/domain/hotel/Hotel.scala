@@ -1,9 +1,10 @@
 package domain.hotel
 
+import domain.WithId
 import domain.room.Room
-import repositories.interfaces.{FromDB, Validated}
+import repositories.interfaces.Validated
 
-case class Hotel(id: Option[Hotel.Id], name: Hotel.Name, city: Hotel.City){
+case class Hotel(id: Option[Hotel.Id], name: Hotel.Name, city: Hotel.City) extends WithId[Hotel.Id] {
   //TODO
   def validate: Validated[Hotel] = Validated(this)
 

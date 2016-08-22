@@ -1,8 +1,11 @@
 package domain
 
+//TODO: do something with me
 trait Id {
   val value: Long
 }
-trait DBid[T] {
-  val id: T
+
+//TODO: rename me
+trait WithId[T <: Id] {
+  val id: Some[T]
 }

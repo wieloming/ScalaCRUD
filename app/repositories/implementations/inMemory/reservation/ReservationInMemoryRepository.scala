@@ -6,7 +6,7 @@ import domain.reservation.Reservation
 import domain.user.User
 import repositories.implementations.inMemory.BaseInMemoryRepository
 import repositories.interfaces._
-import utils.{ValidDataListOrErrors, ValidDataOrErrors, ValueOrErrors}
+import utils.ValueOrErrors
 
 class ReservationInMemoryRepository extends ReservationRepo with BaseInMemoryRepository[Reservation, Reservation.Id] {
   override val idSequence = new AtomicLong(0)

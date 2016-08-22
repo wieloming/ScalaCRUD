@@ -1,9 +1,10 @@
 package domain.user
 
+import domain.WithId
 import repositories.interfaces.Validated
 
 
-case class User(id: Option[User.Id], email: User.Email) {
+case class User(id: Option[User.Id], email: User.Email) extends WithId[User.Id]  {
   //TODO: validate
   def validate: Validated[User] = Validated(this)
 }
