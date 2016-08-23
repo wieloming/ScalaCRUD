@@ -33,24 +33,4 @@ class BaseController extends Controller with UtilsJson {
       case Left(errors) => NotFound(Json.toJson(errors))
     }
 
-  //      .map(response => Ok(Json.toJson(response)))
-  //
-  //  implicit def resultIfExists[T: Writes](future: Future[Option[T]]): Future[Result] =
-  //    future.map {
-  //      case Some(el) => Ok(Json.toJson(el))
-  //      case _ => NotFound
-  //    }
-  //  implicit def resultIfNonEmpty[T: Writes](future: Future[List[T]]): Future[Result] =
-  //    future.map {
-  //      case Nil => NotFound
-  //      case list => Ok(Json.toJson(list))
-  //    }
-  //
-  //  implicit def resultId[T <: Id](future: Future[T]): Future[Result] =
-  //    future.map(response => Ok(Json.toJson(response.value)))
-  //  implicit def resultIfExistsId[T <: Id](future: Future[Option[T]]): Future[Result] =
-  //    future.map {
-  //      case Some(el) => Ok(Json.toJson(el.value))
-  //      case _ => NotFound
-  //    }
 }
