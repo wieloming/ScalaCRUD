@@ -17,15 +17,15 @@ class HotelController @Inject()(container: Container) extends BaseController wit
   }
 
   def findHotelById(id: Long) = Action.async {
-    container.hotelService.findById(Hotel.Id(id))
+    container.hotelService.findById(Hotel.ModelId(id))
   }
 
   def registerRoom(id: Long) = Action.async(parse.json[RoomForRegisterDto]) { request =>
-    container.hotelService.registerRoom(Hotel.Id(id), request.body)
+    container.hotelService.registerRoom(Hotel.ModelId(id), request.body)
   }
 
   def removeRoom(hotelId: Long, roomId: Long) = Action.async {
-    container.roomService.remove(Room.Id(roomId))
+    container.roomService.remove(Room.ModelId(roomId))
   }
 
   def findAvailableRooms(from: LocalDate, to: LocalDate, city: String, price: Long) = Action.async { request =>

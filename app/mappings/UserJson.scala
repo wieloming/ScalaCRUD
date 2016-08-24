@@ -8,7 +8,7 @@ trait UserJson extends BaseJson {
   implicit val userEmailFormat =
     oneField("email", (s: String) => User.Email(s), (u: User.Email) => u.value)
   implicit val userIdFormat =
-    oneField("value", (s: Long) => User.Id(s), (u: User.Id) => u.value)
+    oneField("value", (s: Long) => User.ModelId(s), (u: User.ModelId) => u.value)
   implicit val userForCreateDtoReads =
     oneField("email", (s: String) => UserForCreateDto(User.Email(s)), (u: UserForCreateDto) => u.email.value)
 

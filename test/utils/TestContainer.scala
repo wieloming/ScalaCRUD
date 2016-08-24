@@ -30,10 +30,10 @@ trait TestContainer {
   val hotelService = new HotelService(roomService, reservationService, hotelRepository)
   val bookService = new BookService(roomService, reservationService, userService)
 
-  val hotelId = Hotel.Id(1L)
-  val roomId1 = Room.Id(1L)
-  val roomId2 = Room.Id(2L)
-  val userId = User.Id(1L)
+  val hotelId = Hotel.ModelId(1L)
+  val roomId1 = Room.ModelId(1L)
+  val roomId2 = Room.ModelId(2L)
+  val userId = User.ModelId(1L)
 
   val hotelName = Hotel.Name("name")
   val roomPrice = Room.Price(20)

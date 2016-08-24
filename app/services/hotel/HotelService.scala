@@ -10,22 +10,22 @@ import utils.ValueOrErrors
 
 class HotelService(roomService: RoomService, reservationService: ReservationService, hotelRepository: HotelRepo) {
 
-  def createHotel(hotel: HotelForCreateDto): ValueOrErrors[FromDB[Hotel]] = {
+  def createHotel(hotel: HotelForCreateDto): ValueOrErrors[Hotel.ModelId] = {
     hotelRepository.create(hotel.toValidHotel)
   }
 
-  def findById(id: Hotel.Id): ValueOrErrors[FromDB[Hotel]] = {
+  def findById(id: Hotel.ModelId): ValueOrErrors[FromDB[Hotel, Hotel.ModelId]] = {
     hotelRepository.findById(id)
   }
 
-  def registerRoom(hotelId: Hotel.Id, newRoom: RoomForRegisterDto): ValueOrErrors[FromDB[Room]] = {
+  def registerRoom(hotelId: Hotel.ModelId, newRoom: RoomForRegisterDto): ValueOrErrors[Room.ModelId] = {
      for {
       hotel <- hotelRepository.findById(hotelId)
       room <- roomService.create(Room(None, newRoom.price, hotelId))
     } yield room
   }
 
-  def findAvailableRooms(period: Reservation.Period, city: Hotel.City, price: Room.Price): ValueOrErrors[List[FromDB[Room]]] = {
+  def findAvailableRooms(period: Reservation.Period, city: Hotel.City, price: Room.Price): ValueOrErrors[List[Room]] = {
     def filterBooked(rooms: List[RoomWithReservationsDto]): List[Room] =
       rooms.filter(_.reservations.forall(_.notIn(period))).map(_.room)
     for {

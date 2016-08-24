@@ -8,19 +8,19 @@ import utils.ValueOrErrors
 
 class ReservationService(reservationRepository: ReservationRepo) {
 
-  def create(reservation: Reservation): ValueOrErrors[FromDB[Reservation]] = {
+  def create(reservation: Reservation): ValueOrErrors[Reservation.ModelId] = {
     reservationRepository.create(reservation.validate)
   }
 
-  def findByIds(ids: List[Reservation.Id]): ValueOrErrors[List[FromDB[Reservation]]] = {
+  def findByIds(ids: List[Reservation.ModelId]): ValueOrErrors[List[FromDB[Reservation, Reservation.ModelId]]] = {
     reservationRepository.findByIds(ids)
   }
 
-  def findAllByUserId(id: User.Id): ValueOrErrors[List[FromDB[Reservation]]] = {
+  def findAllByUserId(id: User.ModelId): ValueOrErrors[List[FromDB[Reservation, Reservation.ModelId]]] = {
     reservationRepository.findAllForUser(id)
   }
 
-  def findAllByRoomId(id: Room.Id): ValueOrErrors[List[FromDB[Reservation]]] = {
+  def findAllByRoomId(id: Room.ModelId): ValueOrErrors[List[FromDB[Reservation, Reservation.ModelId]]] = {
     reservationRepository.findAll().map(_.filter(_.roomId == id))
   }
 }

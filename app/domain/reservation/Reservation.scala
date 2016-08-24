@@ -1,12 +1,12 @@
 package domain.reservation
 
-import domain.WithId
+import domain.Model
 import domain.room.Room
 import domain.user.User
 import org.joda.time.LocalDate
 import repositories.interfaces.Validated
 
-case class Reservation(id: Option[Reservation.Id], roomId: Room.Id, userId: User.Id, period: Reservation.Period) extends WithId[Reservation.Id]  {
+case class Reservation(id: Option[Reservation.ModelId], roomId: Room.ModelId, userId: User.ModelId, period: Reservation.Period) {
   //TODO
   def validate: Validated[Reservation] = Validated(this)
 
@@ -16,8 +16,8 @@ case class Reservation(id: Option[Reservation.Id], roomId: Room.Id, userId: User
     bothBefore || bothAfter
   }
 }
-case object Reservation {
-  case class Id(value: Long) extends domain.Id
+case object Reservation extends Model[Reservation] {
+  case class ModelId(value: Long) extends domain.ModelId
   case class Period(from: LocalDate, to: LocalDate){
     require(from isBefore to)
   }

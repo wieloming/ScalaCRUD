@@ -1,5 +1,6 @@
 package controllers
 
+import domain.ModelId
 import mappings.UtilsJson
 import play.api.libs.json.{Json, Writes}
 import play.api.mvc.{Controller, Result}
@@ -20,14 +21,21 @@ class BaseController extends Controller with UtilsJson {
       case Left(errors) => NotFound(Json.toJson(errors))
     }
 
-  implicit def resultFromDB[T: Writes](value: ValueOrErrors[FromDB[T]]): Future[Result] =
+  //TODO: one method
+  implicit def result[T <: ModelId](value: ValueOrErrors[T]): Future[Result] =
+    value.value.map {
+      case Right(data) => Ok(Json.toJson(data.value))
+      case Left(errors) => NotFound(Json.toJson(errors))
+    }
+
+  implicit def resultFromDB[T: Writes, G <: ModelId](value: ValueOrErrors[FromDB[T, G]]): Future[Result] =
     value.value.map {
       case Right(data) => Ok(Json.toJson(data.value))
       case Left(errors) => NotFound(Json.toJson(errors))
     }
 
 
-  implicit def resultListFromDB[T: Writes](value: ValueOrErrors[List[FromDB[T]]]): Future[Result] =
+  implicit def resultListFromDB[T: Writes, G <: ModelId](value: ValueOrErrors[List[FromDB[T, G]]]): Future[Result] =
     value.value.map {
       case Right(data) => Ok(Json.toJson(data.map(_.value)))
       case Left(errors) => NotFound(Json.toJson(errors))

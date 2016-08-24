@@ -9,7 +9,7 @@ import utils.ValueOrErrors
 
 class BookService(roomService: RoomService, reservationService: ReservationService, userService: UserService) {
 
-  def book(reservation: Reservation): ValueOrErrors[FromDB[Reservation]] = {
+  def book(reservation: Reservation): ValueOrErrors[Reservation.ModelId] = {
     for {
       user <- userService.findById(reservation.userId)
       room <- roomService.findById(reservation.roomId)

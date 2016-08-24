@@ -1,18 +1,18 @@
 package domain.room
 
-import domain.WithId
+import domain.Model
 import domain.hotel.Hotel
 import domain.reservation.Reservation
 import repositories.interfaces.{FromDB, Validated}
 
-case class Room(id: Option[Room.Id], price: Room.Price, hotelId: Hotel.Id) extends WithId[Room.Id] {
+case class Room(id: Option[Room.ModelId], price: Room.Price, hotelId: Hotel.ModelId) {
   //TODO
   def validate: Validated[Room] = Validated(this)
 
-  def addReservations(reservations: List[FromDB[Reservation]]) = RoomWithReservationsDto(this, reservations)
+  def addReservations(reservations: List[FromDB[Reservation, Reservation.ModelId]]) = RoomWithReservationsDto(this, reservations)
 }
-case object Room {
-  case class Id(value: Long) extends domain.Id
+case object Room extends Model[Room] {
+  case class ModelId(value: Long) extends domain.ModelId
   case class Price(value: Long){
     def >=(that: Price) = this.value >= that.value
     def +(that: Price) = Price(this.value + that.value)

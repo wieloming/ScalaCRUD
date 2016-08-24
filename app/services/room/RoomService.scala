@@ -10,21 +10,21 @@ import utils.ValueOrErrors
 
 class RoomService(reservationService: ReservationService, roomRepository: RoomRepo) {
 
-  def remove(id: Room.Id): ValueOrErrors[FromDB[Room]] = roomRepository.remove(id)
+  def remove(id: Room.ModelId): ValueOrErrors[FromDB[Room, Room.ModelId]] = roomRepository.remove(id)
 
-  def create(room: Room): ValueOrErrors[FromDB[Room]] = roomRepository.create(room.validate)
+  def create(room: Room): ValueOrErrors[Room.ModelId] = roomRepository.create(room.validate)
 
-  def findByIds(ids: List[Room.Id]): ValueOrErrors[List[FromDB[Room]]] =
+  def findByIds(ids: List[Room.ModelId]): ValueOrErrors[List[FromDB[Room, Room.ModelId]]] =
     roomRepository.findByIds(ids)
 
-  def findById(id: Room.Id): ValueOrErrors[FromDB[Room]] =
+  def findById(id: Room.ModelId): ValueOrErrors[FromDB[Room, Room.ModelId]] =
     roomRepository.findById(id)
 
-  def isFreeBetween(roomId: Room.Id, period: Reservation.Period): ValueOrErrors[Boolean] = {
+  def isFreeBetween(roomId: Room.ModelId, period: Reservation.Period): ValueOrErrors[Boolean] = {
     reservationService.findAllByRoomId(roomId).map(!_.exists(!_.notIn(period)))
   }
 
-  def findAllByHotelIds(ids: Hotel.Id*): ValueOrErrors[List[FromDB[Room]]] =
+  def findAllByHotelIds(ids: Hotel.ModelId*): ValueOrErrors[List[FromDB[Room, Room.ModelId]]] =
     roomRepository.findAll() map (_.filter(r => ids contains r.hotelId))
 
 }

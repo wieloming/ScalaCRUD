@@ -1,12 +1,13 @@
 package repositories.interfaces
 
+import domain.Model
+
 import scala.language.implicitConversions
 
-//TODO: id as field
-case class FromDB[T](value: T, id: T#Id)
+case class FromDB[T, I <: Model[T]](value: T, id: I#Id)
 
 object FromDB {
-  implicit def unwrap[T, G](v: FromDB[T]): T = v.value
+  implicit def unwrap[T, I <: Model[T]](v: FromDB[T, I]): T = v.value
 }
 
 case class Validated[T](value: T)

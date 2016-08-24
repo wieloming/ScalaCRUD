@@ -3,12 +3,12 @@ package utils
 import repositories.interfaces.Errors
 
 import scala.concurrent.Future
+import play.api.libs.concurrent.Execution.Implicits._
 
 case class ValueOrErrors[T](value: Future[Either[Errors, T]]) {
   def map[F](f: T => F): ValueOrErrors[F] =
     ValueOrErrors(value.map(_.right.map(el => f(el))))
 
-  //TODO fix flatMap
   def flatMap[F](f: T => ValueOrErrors[F]): ValueOrErrors[F] = {
     ValueOrErrors(value.flatMap {
       case Left(errors) => Future.successful(Left(errors))

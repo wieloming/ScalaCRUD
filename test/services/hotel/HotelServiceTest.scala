@@ -15,7 +15,7 @@ class HotelServiceTest extends PlaySpecification with TestContainer {
   }
   "return hotel from DB after creating" in {
     val fromDB = await(hotelService.findById(hotelId)).get
-    HotelWithRoomsDto(Hotel(Some(Hotel.Id(1L)), hotelName, city), List.empty) must equalTo(fromDB)
+    HotelWithRoomsDto(Hotel(Some(Hotel.ModelId(1L)), hotelName, city), List.empty) must equalTo(fromDB)
   }
   "HotelService" should {
     "register new room" in {

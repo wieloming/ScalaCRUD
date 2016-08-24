@@ -8,15 +8,15 @@ import utils.ValueOrErrors
 
 class UserService(reservationService: ReservationService, userRepository: UserRepo) {
 
-  def createUser(user: UserForCreateDto): ValueOrErrors[FromDB[User]] = {
+  def createUser(user: UserForCreateDto): ValueOrErrors[User.ModelId] = {
     userRepository.create(User(None, user.email).validate)
   }
 
-  def findById(id: User.Id): ValueOrErrors[FromDB[User]] = {
+  def findById(id: User.ModelId): ValueOrErrors[FromDB[User, User.ModelId]] = {
     userRepository.findById(id)
   }
 
-  def findReservations(id: User.Id): ValueOrErrors[List[FromDB[Reservation]]] = {
+  def findReservations(id: User.ModelId): ValueOrErrors[List[FromDB[Reservation, Reservation.ModelId]]] = {
     reservationService.findAllByUserId(id)
   }
 }

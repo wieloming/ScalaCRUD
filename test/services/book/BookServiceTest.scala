@@ -16,7 +16,7 @@ class BookServiceTest extends PlaySpecification with TestContainer {
       val createdId = await(hotelService.createHotel(hotel))
       await(hotelService.registerRoom(createdId, room))
       val fromDB = await(bookService.book(reservation(oneWeekPeriod)))
-      fromDB must equalTo(Some(Reservation.Id(1)))
+      fromDB must equalTo(Some(Reservation.ModelId(1)))
     }
   }
   "BookService" should {
