@@ -11,10 +11,10 @@ trait RoomJson extends UserJson with HotelJson {
     oneField("price", (s: Long) => RoomForRegisterDto(Room.Price(s)), (u: RoomForRegisterDto) => u.price.value)
 
   implicit val roomWrites: Writes[Room] = (
-    (JsPath \ "id").writeNullable[Long] and
+    (JsPath \ "id").write[Long] and
       (JsPath \ "price").write[Long] and
       (JsPath \ "hotelId").write[Long]
-    ) ((r: Room) => (r.id.map(_.value), r.price.value, r.hotelId.value))
+    ) ((r: Room) => (r.id.value, r.price.value, r.hotelId.value))
 
   implicit val hotelWithRoomsWrite = Json.writes[HotelWithRoomsDto]
 }

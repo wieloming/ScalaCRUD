@@ -1,19 +1,19 @@
 package repositories.interfaces
 
-import domain.Model
+import domain.{ModelId, ModelForCreate}
 import utils.ValueOrErrors
 
-trait BaseRepo[T, I <: Model[T]] {
+trait BaseRepo[T, G <: ModelForCreate[T, Id], Id <: ModelId] {
 
-  def create(obj: Validated[T]): ValueOrErrors[I#Id]
+  def create(obj: Validated[G]): ValueOrErrors[Id]
 
-  def update(id: I#Id, el: Validated[T]): ValueOrErrors[FromDB[T, I#Id]]
+  def update(id: Id, el: Validated[G]): ValueOrErrors[T]
 
-  def findById(id: I#Id): ValueOrErrors[FromDB[T, I#Id]]
+  def findById(id: Id): ValueOrErrors[T]
 
-  def findAll(): ValueOrErrors[List[FromDB[T, I#Id]]]
+  def findAll(): ValueOrErrors[List[T]]
 
-  def findByIds(ids: List[I#Id]): ValueOrErrors[List[FromDB[T, I#Id]]]
+  def findByIds(ids: List[Id]): ValueOrErrors[List[T]]
 
-  def remove(id: I#Id): ValueOrErrors[FromDB[T, I#Id]]
+  def remove(id: Id): ValueOrErrors[T]
 }

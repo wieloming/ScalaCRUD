@@ -9,7 +9,7 @@ import services.Container
 
 class BookController @Inject()(container: Container) extends BaseController with ReservationJson {
 
-  def book = Action.async(parse.json[Reservation]) { request =>
+  def book = Action.async(parse.json[Reservation.ForCreate]) { request =>
     container.bookService.book(request.body)
   }
 }

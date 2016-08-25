@@ -1,6 +1,6 @@
 package mappings
 
-import domain.user.{User, UserForCreateDto}
+import domain.user.User
 import play.api.libs.json._
 
 trait UserJson extends BaseJson {
@@ -9,8 +9,8 @@ trait UserJson extends BaseJson {
     oneField("email", (s: String) => User.Email(s), (u: User.Email) => u.value)
   implicit val userIdFormat =
     oneField("value", (s: Long) => User.ModelId(s), (u: User.ModelId) => u.value)
-  implicit val userForCreateDtoReads =
-    oneField("email", (s: String) => UserForCreateDto(User.Email(s)), (u: UserForCreateDto) => u.email.value)
+  implicit val userForCreateReads =
+    oneField("email", (s: String) => User.ForCreate(User.Email(s)), (u: User.ForCreate) => u.email.value)
 
   implicit val userWritesFormat: Format[User] = Json.format[User]
 }

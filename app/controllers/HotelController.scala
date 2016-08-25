@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import domain.hotel.{Hotel, HotelForCreateDto}
+import domain.hotel.Hotel
 import domain.reservation.Reservation
 import domain.room.{Room, RoomForRegisterDto}
 import play.api.mvc._
@@ -12,7 +12,7 @@ import services.Container
 
 class HotelController @Inject()(container: Container) extends BaseController with RoomJson {
 
-  def createHotel() = Action.async(parse.json[HotelForCreateDto]) { request =>
+  def createHotel() = Action.async(parse.json[Hotel.ForCreate]) { request =>
     container.hotelService.createHotel(request.body)
   }
 

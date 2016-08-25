@@ -1,7 +1,6 @@
 package services.book
 
 import domain.reservation.Reservation
-import repositories.interfaces.FromDB
 import services.reservation.ReservationService
 import services.room.RoomService
 import services.user.UserService
@@ -9,7 +8,7 @@ import utils.ValueOrErrors
 
 class BookService(roomService: RoomService, reservationService: ReservationService, userService: UserService) {
 
-  def book(reservation: Reservation): ValueOrErrors[Reservation.ModelId] = {
+  def book(reservation: Reservation.ForCreate): ValueOrErrors[Reservation.ModelId] = {
     for {
       user <- userService.findById(reservation.userId)
       room <- roomService.findById(reservation.roomId)

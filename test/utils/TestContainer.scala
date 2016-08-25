@@ -3,7 +3,7 @@ package utils
 import domain.hotel.{Hotel, HotelForCreateDto}
 import domain.reservation.Reservation
 import domain.room.{Room, RoomForRegisterDto}
-import domain.user.{User, UserForCreateDto}
+import domain.user.User
 import org.joda.time.LocalDate
 import services.book.BookService
 import services.hotel.HotelService

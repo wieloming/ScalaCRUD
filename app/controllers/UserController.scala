@@ -4,16 +4,14 @@ import javax.inject.Singleton
 
 import javax.inject._
 import play.api.mvc._
-import play.api.libs.json._
-import domain.user.{User, UserForCreateDto}
+import domain.user.User
 import mappings.{ReservationJson, UserJson}
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import services.Container
 
 @Singleton
 class UserController @Inject()(container: Container) extends BaseController with UserJson with ReservationJson {
 
-  def createUser() = Action.async(parse.json[UserForCreateDto]) { request =>
+  def createUser() = Action.async(parse.json[User.ForCreate]) { request =>
     container.userService.createUser(request.body)
   }
 

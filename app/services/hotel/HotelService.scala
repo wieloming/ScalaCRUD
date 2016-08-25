@@ -1,27 +1,27 @@
 package services.hotel
 
-import domain.hotel.{Hotel, HotelForCreateDto}
+import domain.hotel.Hotel
 import domain.reservation.Reservation
 import domain.room.{Room, RoomForRegisterDto, RoomWithReservationsDto}
-import repositories.interfaces.{FromDB, HotelRepo}
+import repositories.interfaces.HotelRepo
 import services.reservation.ReservationService
 import services.room.RoomService
 import utils.ValueOrErrors
 
 class HotelService(roomService: RoomService, reservationService: ReservationService, hotelRepository: HotelRepo) {
 
-  def createHotel(hotel: HotelForCreateDto): ValueOrErrors[Hotel.ModelId] = {
-    hotelRepository.create(hotel.toValidHotel)
+  def createHotel(hotel: Hotel.ForCreate): ValueOrErrors[Hotel.ModelId] = {
+    hotelRepository.create(hotel.validate)
   }
 
-  def findById(id: Hotel.ModelId): ValueOrErrors[FromDB[Hotel, Hotel.ModelId]] = {
+  def findById(id: Hotel.ModelId): ValueOrErrors[Hotel] = {
     hotelRepository.findById(id)
   }
 
   def registerRoom(hotelId: Hotel.ModelId, newRoom: RoomForRegisterDto): ValueOrErrors[Room.ModelId] = {
      for {
       hotel <- hotelRepository.findById(hotelId)
-      room <- roomService.create(Room(None, newRoom.price, hotelId))
+      room <- roomService.create(Room.ForCreate(newRoom.price, hotelId))
     } yield room
   }
 
